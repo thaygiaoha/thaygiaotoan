@@ -105,6 +105,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
       
       {/* 1. Header: Nút chọn lớp & Quiz - Căn chỉnh đồng đều h-[60px] kèm hướng dẫn vuốt mobile */}
+      <div className="flex justify-center">
       <div className="bg-white p-2 rounded-3xl shadow-lg border border-slate-100 mt-4 overflow-hidden">
         <div className="flex flex-nowrap overflow-x-auto gap-3 pb-2 pt-1 px-1 no-scrollbar items-center">
           <div className="flex flex-col items-center shrink-0">
@@ -119,9 +120,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </div>
           
           {[
-            {g: 9, icon: 'fas fa-graduation-cap'},
-            {g: 10, icon: 'fas fa-school'},
-            {g: 11, icon: 'fas fa-university'},
+            {g: 9, icon: 'fas fa-user-graduate'},
+            {g: 10, icon: 'fas fa-user-graduate'},
+            {g: 11, icon: 'fas fa-user-graduate'},
             {g: 12, icon: 'fas fa-user-graduate'}
           ].map(item => (
             <button key={item.g} onClick={() => onSelectGrade(item.g)} className="px-6 bg-blue-600 text-white border-b-4 border-blue-800 rounded-2xl font-black text-sm shrink-0 hover:brightness-110 active:scale-95 transition-all h-[60px] flex items-center justify-center gap-2 min-w-[120px]">
@@ -136,7 +137,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </button>
         </div>
       </div>
-
+     </div>
       {/* 2. Marquee thông báo - Fix Animation */}
       <div className="flex justify-center">
      <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 mx-1"> 
