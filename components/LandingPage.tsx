@@ -242,7 +242,7 @@ useEffect(() => {
             { label: "Vào Học Nhóm", icon: "fas fa-users", link: "https://www.facebook.com/hoctoanthayha.bg" },
             { label: user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập", icon: "fas fa-sign-in-alt", action: onOpenAuth },
             { label: "Nâng Cấp VIP", icon: "fas fa-gem", action: onOpenVip },
-            { label: "Ứng dụng khác", icon: "fas fa-headset", link: "https://zalo.me/0988948882" },
+            { label: "Ứng dụng khác", icon: "fas fa-th", link: "https://zalo.me/0988948882" },
             { label: "Kho Tài Liệu", icon: "fas fa-book-open", link: "https://www.facebook.com/hoctoanthayha.bg" }
             
           ].map((btn, i) => (
