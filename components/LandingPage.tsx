@@ -17,6 +17,14 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, user, onOpenAuth, onOpenVip }) => {
+  const ADMIN_CONFIG = {
+  quizPassword: "66668888", // Thay bằng mật khẩu bạn muốn
+  schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 2", "THPT Lạng Giang số 1", "Khác"],
+  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"] };
+  const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
+  const [inputPassword, setInputPassword] = useState('');
+  const [isOtherSchool, setIsOtherSchool] = useState(false);
+  const [isOtherBank, setIsOtherBank] = useState(false);
   const [currentImg, setCurrentImg] = useState(0);
   const [showQuizModal, setShowQuizModal] = useState<{num: number, pts: number} | null>(null);
   const [quizInfo, setQuizInfo] = useState({ name: '', class: '', school: '', phone: '' });
@@ -252,30 +260,83 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         </div>
       </footer>
 
-      {/* Modals */}
-      {showQuizModal && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
-          <div className="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl relative border border-slate-100 animate-fade-in">
-            <h2 className="text-2xl font-black text-orange-500 mb-6 uppercase tracking-tighter text-center">Thông tin luyện tập</h2>
-            <form onSubmit={handleStartQuiz} className="space-y-4">
-              <input required type="text" placeholder="Họ và tên" className="w-full p-4 bg-slate-50 rounded-2xl border-none font-black outline-none focus:ring-2 focus:ring-orange-500" value={quizInfo.name} onChange={e=>setQuizInfo({...quizInfo, name: e.target.value})} />
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Lớp" className="p-4 bg-slate-50 rounded-2xl border-none font-black outline-none focus:ring-2 focus:ring-orange-500" value={quizInfo.class} onChange={e=>setQuizInfo({...quizInfo, class: e.target.value})} />
-                <input required type="tel" placeholder="Số điện thoại" className="p-4 bg-slate-50 rounded-2xl border-none font-black outline-none focus:ring-2 focus:ring-orange-500" value={quizInfo.phone} onChange={e=>setQuizInfo({...quizInfo, phone: e.target.value})} />
-              </div>
-              <input type="text" placeholder="Trường học" className="w-full p-4 bg-slate-50 rounded-2xl border-none font-black outline-none" value={quizInfo.school} onChange={e=>setQuizInfo({...quizInfo, school: e.target.value})} />
-              <div className="p-4 bg-orange-50 rounded-2xl space-y-2">
-                <p className="text-[10px] font-black text-orange-400 uppercase tracking-widest text-center">Nhận thưởng (STK/Ngân hàng)</p>
-                <input type="text" placeholder="Số tài khoản" className="w-full p-3 bg-white rounded-xl font-bold" value={bankInfo.stk} onChange={e=>setBankInfo({...bankInfo, stk: e.target.value})} />
-                <input type="text" placeholder="Tên ngân hàng" className="w-full p-3 bg-white rounded-xl font-bold" value={bankInfo.bankName} onChange={e=>setBankInfo({...bankInfo, bankName: e.target.value})} />
-              </div>
-              <button className="w-full py-5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl font-black shadow-xl uppercase active:scale-95 border-b-4 border-orange-700 mt-4 text-xl tracking-tighter">BẮT ĐẦU QUIZ</button>
-            </form>
-            <button onClick={() => setShowQuizModal(null)} className="absolute top-6 right-6 text-slate-300 hover:text-red-500 transition-colors text-2xl">✕</button>
-          </div>
-        </div>
-      )}
+      {/* Modals Nhập thông tin trả lời QuiZ*/}
+     {showQuizModal && (
+  <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+    <div className="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl relative border border-slate-100 overflow-y-auto max-h-[90vh]">
+      <h2 className="text-2xl font-black text-orange-500 mb-4 uppercase text-center">
+        {quizMode === 'gift' ? '🎁 Chế độ Quà QuiZ' : '🎮 QuiZ Tự Do'}
+      </h2>
 
+      {/* Bước 1: Chọn chế độ nếu chưa chọn */}
+      {!quizMode ? (
+        <div className="flex flex-col gap-4">
+          <button onClick={() => setQuizMode('free')} className="py-4 bg-blue-500 text-white rounded-2xl font-bold uppercase">Chơi Tự Do (Không thưởng)</button>
+          <button onClick={() => setQuizMode('gift')} className="py-4 bg-orange-500 text-white rounded-2xl font-bold uppercase">Săn Quà (Cần mật khẩu)</button>
+        </div>
+      ) : (
+        <form onSubmit={handleStartQuiz} className="space-y-4">
+          {/* Nhập mật khẩu nếu chọn Quà */}
+          {quizMode === 'gift' && (
+            <input 
+              required 
+              type="password" 
+              placeholder="Nhập mật khẩu Admin cấp" 
+              className="w-full p-3 bg-red-50 border-2 border-red-200 rounded-xl font-bold"
+              value={inputPassword}
+              onChange={e => setInputPassword(e.target.value)}
+            />
+          )}
+
+          <input required placeholder="Họ và tên" className="w-full p-3 bg-slate-100 rounded-xl font-bold" value={quizInfo.name} onChange={e=>setQuizInfo({...quizInfo, name: e.target.value})} />
+          <input required type="tel" placeholder="Số điện thoại" className="w-full p-3 bg-slate-100 rounded-xl font-bold" value={quizInfo.phone} onChange={e=>setQuizInfo({...quizInfo, phone: e.target.value})} />
+
+          {/* Chọn Trường học */}
+          <select 
+            className="w-full p-3 bg-slate-100 rounded-xl font-bold"
+            onChange={(e) => {
+              const val = e.target.value;
+              setIsOtherSchool(val === "Khác");
+              setQuizInfo({...quizInfo, school: val});
+            }}
+          >
+            <option value="">-- Chọn trường học --</option>
+            {ADMIN_CONFIG.schools.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          {isOtherSchool && (
+            <input placeholder="Nhập tên trường khác" className="w-full p-3 bg-blue-50 border border-blue-200 rounded-xl font-bold" onChange={e => setQuizInfo({...quizInfo, school: e.target.value})} />
+          )}
+
+          {/* Phần Ngân hàng chỉ hiện khi chọn Quà QuiZ */}
+          {quizMode === 'gift' && (
+            <div className="p-4 bg-orange-50 rounded-2xl space-y-3">
+              <p className="text-[10px] font-black text-orange-400 uppercase text-center">Thông tin nhận thưởng</p>
+              <input required placeholder="Số tài khoản" className="w-full p-3 bg-white rounded-xl font-bold" value={bankInfo.stk} onChange={e=>setBankInfo({...bankInfo, stk: e.target.value})} />
+              
+              <select 
+                className="w-full p-3 bg-white rounded-xl font-bold"
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setIsOtherBank(val === "Khác");
+                  setBankInfo({...bankInfo, bankName: val});
+                }}
+              >
+                <option value="">-- Chọn Ngân hàng --</option>
+                {ADMIN_CONFIG.banks.map(b => <option key={b} value={b}>{b}</option>)}
+              </select>
+              {isOtherBank && (
+                <input placeholder="Nhập ngân hàng khác" className="w-full p-3 bg-white border border-orange-200 rounded-xl font-bold" onChange={e => setBankInfo({...bankInfo, bankName: e.target.value})} />
+              )}
+            </div>
+          )}
+
+          <button className="w-full py-4 bg-orange-500 text-white rounded-2xl font-black shadow-xl">BẮT ĐẦU</button>
+          <button type="button" onClick={() => {setQuizMode(null); setShowQuizModal(null);}} className="w-full text-slate-400 text-sm">Quay lại</button>
+        </form>
+      )}
+    </div>
+  </div>
+)}
       {showRateModal && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-lg">
           <div className="bg-white w-full max-sm rounded-[3rem] p-8 shadow-2xl border border-slate-100 text-center space-y-6">
