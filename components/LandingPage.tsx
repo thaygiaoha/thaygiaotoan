@@ -12,6 +12,13 @@ const OTHER_APPS = [
   { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
   { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
 ];
+const rankIcon = (rank: number) => {
+  if (rank === 1) return "🥇";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
+  return "";
+};
+
 
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
@@ -46,17 +53,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   });
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const resp = await fetch(`${DANHGIA_URL}?type=getStats&t=${Date.now()}`);
-        const result = await resp.json();
-        if (result.status === "success") {
-          setStats(result.data);
-        }
-      } catch (e) {
-        console.error("Lỗi lấy thống kê:", e);
-      }
-    };
+   const fetchStats = async () => {
+  const resp = await fetch(`${DANHGIA_URL}?type=getStats&t=${Date.now()}`);
+  const result = await resp.json();
+  if (result.status === "success") setStats(result.data);
+  };
+
     fetchStats();
     
     const interval = setInterval(() => {
@@ -110,11 +112,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         idNumber: user?.phoneNumber || "GUEST",
         taikhoanapp: user?.isVip ? "VIP" : "FREE"
       };
-      await fetch(DANHGIA_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
+     await fetch(DANHGIA_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
       });
+
        if (rating >= 4) {
         alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${rating} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
       } else {
@@ -189,44 +192,71 @@ useEffect(() => {
       </div>
      </div>
       {/* 2. Marquee thông báo - Fix Animation */}
-      <div className="flex justify-center">
-     <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 mx-1"> 
-     <div className="whitespace-nowrap overflow-hidden"> <div className="animate-marquee whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest"> 
-     ⭐ Chào mừng các bạn đến với Hệ thống học tập trực tuyến môn Toán ! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-     ⭐ Luyện tập chăm chỉ mỗi ngày để bứt phá điểm số! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      
-     ⭐ Liên hệ: 0988.948.882 để tham gia nhóm viết Webapp phục vụ công việc nhé ⭐ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-     </div> 
-     </div> 
-     </div>
-    {/* 3. Khối nội dung chính - Bố cục cân đối (LG 3 - 7 - 2) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
-        {/* CỘT TRÁI: TOP QUIZ */}
-        <div className="lg:col-span-3 flex flex-col">
-          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
-            <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
-               <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
-            </div>
-            <div className="p-2 space-y-1 flex-grow bg-slate-50 overflow-y-auto max-h-[420px] custom-scrollbar">
-              {stats.top10.length > 0 ? stats.top10.map((item) => (
-                <div key={item.rank} className="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.01]">
-                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 pr-1">
-                    <span className="font-bold text-slate-800 text-[10px] truncate">{item.rank}. {item.name}</span>
-                    <span className="text-[9px] text-slate-400 font-bold">{formatPhoneHidden(item.phone)}</span>
-                  </div>
-                  <div className="text-right flex flex-col shrink-0">
-                    <span className="font-black text-blue-600 text-[10px] leading-none">{item.score.toFixed(1)} đ</span>
-                    <span className="text-[8px] text-slate-400 mt-0.5"><i className="far fa-clock mr-0.5"></i>{item.time}</span>
-                  </div>
-                </div>
-              )) : (
-                <div className="p-10 text-center text-slate-400 text-xs uppercase font-black">Đang cập nhật...</div>
-              )}
-            </div>
+     <div className="flex justify-center my-2">
+  <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-3/4">
+    <div className="whitespace-nowrap overflow-hidden">
+      <div className="animate-marquee-slow text-white font-black uppercase text-[11px] tracking-widest">
+        ⭐ Chào mừng các bạn đến với Hệ thống học tập trực tuyến môn Toán !
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ⭐ Luyện tập chăm chỉ mỗi ngày để bứt phá điểm số!
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      
+       
+        ⭐ Liên hệ: 0988.948.882 để tham gia nhóm tạo Webpp nhé! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+</div>
+@keyframes marquee-slow {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee-slow {
+  animation: marquee-slow 30s linear infinite;
+}
+
+  {/* 3. Khối nội dung chính - Bố cục cân đối (LG 3 - 7 - 2) */}
+      <div className="bg-white rounded-2xl shadow-md p-3">
+  <h3 className="text-center font-black text-indigo-600 text-sm mb-3">
+    👑 TOP 10 QUIZ TUẦN
+  </h3>
+
+  <div className="space-y-2 max-h-[420px] overflow-y-auto">
+    {stats.top10?.length > 0 ? (
+      stats.top10.map((item, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center bg-slate-50 rounded-xl p-3 border"
+        >
+          {/* LEFT */}
+          <div className="flex flex-col min-w-0">
+            <span className="font-black text-[12px] truncate text-slate-800">
+              {index + 1}. {item.name} {rankIcon(index + 1)}
+            </span>
+            <span className="text-[9px] text-slate-400 font-bold">
+              {item.idPhone}
+            </span>
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex flex-col text-right">
+            <span className="font-black text-red-600 text-[12px]">
+              {item.tongdiem} đ
+            </span>
+            <span className="text-[9px] text-slate-400">
+              ⏱ {item.fulltime}
+            </span>
           </div>
         </div>
-
-        {/* CỘT GIỮA: ẢNH CAROUSEL (Rộng hơn) */}
+      ))
+    ) : (
+      <div className="text-center text-slate-400 text-xs font-bold py-10">
+        ĐANG CẬP NHẬT...
+      </div>
+    )}
+  </div>
+</div>
+       {/* CỘT GIỮA: ẢNH CAROUSEL (Rộng hơn) */}
         <div className="lg:col-span-7">
           <div className="relative h-64 md:h-full min-h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
             {IMAGES_CAROUSEL.map((img, idx) => (
