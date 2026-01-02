@@ -117,6 +117,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       setIsSubmittingRate(false);
     }
   };
+  // Thêm useEffect này vào trong Component LandingPage
+useEffect(() => {
+  if (showQuizModal) {
+    const savedInfo = localStorage.getItem('quiz_student_info');
+    if (savedInfo) {
+      const parsed = JSON.parse(savedInfo);
+      setQuizInfo(prev => ({
+        ...prev,
+        name: parsed.name || '',
+        class: parsed.class || '',
+        school: parsed.school || '',
+        phone: parsed.phone || ''
+      }));
+      setBankInfo({
+        stk: parsed.stk || '',
+        bankName: parsed.bankName || ''
+      });
+    }
+  }
+}, [showQuizModal]);
 
   const totalRatings = (Object.values(stats.ratings) as number[]).reduce((a, b) => a + b, 0);
 
