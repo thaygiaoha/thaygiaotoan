@@ -1975,7 +1975,6 @@ question: "Tính tích phân $I=\\int\\limits_{0}^{1}{xdx}-\\int\\limits_{0}^{2}
 a: "7.89"
 }
 ];
-];
 
 const shuffleArray = <T>(array: T[]): T[] => {
   const newArr = [...array];
