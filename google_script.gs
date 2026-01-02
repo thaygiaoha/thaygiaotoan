@@ -110,7 +110,7 @@ function doPost(e) {
       let sheetRate = ss.getSheetByName("danhgia");
       if (!sheetRate) {
         sheetRate = ss.insertSheet("danhgia");
-        sheetRate.appendRow(["Timestamp", "sosao", "name", "class", "idNumber", "taikhoanapp"]);
+        sheetRate.appendRow(["Timestamp", "stars", "name", "class", "idNumber", "taikhoanapp"]);
       }
       sheetRate.appendRow([new Date(), data.stars, data.name, data.class, data.idNumber, data.taikhoanapp]);
       return createResponse("success", "OK");
