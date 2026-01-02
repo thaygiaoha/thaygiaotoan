@@ -6,6 +6,12 @@ const ADMIN_CONFIG = {
   quizPassword: "66668888", // Thay bằng mật khẩu bạn muốn
   schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 2", "THPT Lạng Giang số 1", "Khác"],
   banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"] };
+const OTHER_APPS = [
+  { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
+  { label: "Kênh Youtube Toán", icon: "fab fa-youtube", link: "https://youtube.com/..." },
+  { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
+  { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
+];
 
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
@@ -234,29 +240,53 @@ useEffect(() => {
             </div>
           </div>
         </div>
+        {/* 3 CỘT PHẢI: NÚT CHỨC NĂNG */}
+<div className="lg:col-span-2 flex flex-col gap-3">
+  {/* Các nút cố định */}
+  <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
+    <i className="fas fa-headset text-lg mb-1"></i>
+    <span>Trợ lý học tập</span>
+  </button>
 
-        {/* CỘT PHẢI: NÚT CHỨC NĂNG */}
-        <div className="lg:col-span-2 flex flex-col gap-3">
-          {[
-             { label: "Trợ lý học tập", icon: "fas fa-headset", link: "https://new-chat-bot-two.vercel.app/" },
-            { label: "Vào Học Nhóm", icon: "fas fa-users", link: "https://www.facebook.com/hoctoanthayha.bg" },
-            { label: user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập", icon: "fas fa-sign-in-alt", action: onOpenAuth },
-            { label: "Nâng Cấp VIP", icon: "fas fa-gem", action: onOpenVip },
-            { label: "Ứng dụng khác", icon: "fas fa-th", link: "https://zalo.me/0988948882" },
-            { label: "Kho Tài Liệu", icon: "fas fa-book-open", link: "https://www.facebook.com/hoctoanthayha.bg" }
-            
-          ].map((btn, i) => (
-            <button 
-              key={i} 
-              onClick={btn.action || (() => window.open(btn.link, '_blank'))}
-              className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 hover:brightness-110 transition-all p-2 text-center"
-            >
-              <i className={`${btn.icon} text-lg mb-1`}></i>
-              <span className="leading-tight">{btn.label}</span>
-            </button>
-          ))}
-        </div>
+  <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
+    <i className="fas fa-users text-lg mb-1"></i>
+    <span>Đăng ký học Toán</span>
+  </button>
+  <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
+    <i className="fas fa-sign-in-alt text-lg mb-1"></i>
+    <span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
+  </button>
+
+  <button onClick={onOpenVip} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-orange-700 p-2 text-center">
+    <i className="fas fa-gem text-lg mb-1"></i>
+    <span>Nâng Cấp VIP</span>
+  </button>
+</div>
+  {/* NÚT ỨNG DỤNG KHÁC - DẠNG SỔ CHỌN */}
+  <div className="relative group">
+    <button className="w-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2 text-center">
+      <i className="fas fa-th text-lg mb-1"></i>
+      <span>Ứng dụng khác <i className="fas fa-chevron-down ml-1 text-[8px]"></i></span>
+    </button>
+    
+    {/* Danh sách sổ xuống khi di chuột vào (Hover) hoặc Click trên mobile */}
+    <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block animate-fade-in z-[50]">
+      <div className="p-2 flex flex-col gap-1">
+        {OTHER_APPS.map((app, idx) => (
+          <a 
+            key={idx} 
+            href={app.link} 
+            target="_blank" 
+            rel="noreferrer"
+            className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors"
+          >
+            <i className={`${app.icon} text-teal-600 w-5`}></i>
+            <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
+          </a>
+        ))}
       </div>
+    </div>
+  </div>
 
       {/* 4. Tin tức */}
       <div className="bg-white p-6 rounded-[2.5rem] shadow-xl border border-slate-100 border-b-8 border-slate-200">
@@ -307,8 +337,8 @@ useEffect(() => {
       {/* Bước 1: Chọn chế độ nếu chưa chọn */}
       {!quizMode ? (
         <div className="flex flex-col gap-4">
-          <button onClick={() => setQuizMode('free')} className="py-4 bg-blue-500 text-white rounded-2xl font-bold uppercase">Chơi Tự Do (Không thưởng)</button>
-          <button onClick={() => setQuizMode('gift')} className="py-4 bg-orange-500 text-white rounded-2xl font-bold uppercase">Săn Quà (Cần mật khẩu)</button>
+          <button onClick={() => setQuizMode('free')} className="py-4 bg-blue-500 text-white rounded-2xl font-bold uppercase">🎮 Chơi Tự Do (Không thưởng)</button>
+          <button onClick={() => setQuizMode('gift')} className="py-4 bg-orange-500 text-white rounded-2xl font-bold uppercase">🎁 Săn Quà (Cần mật khẩu)</button>
         </div>
       ) : (
         <form onSubmit={handleStartQuiz} className="space-y-4">
