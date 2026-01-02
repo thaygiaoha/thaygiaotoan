@@ -132,6 +132,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         </div>
       </div>
      </div>
+    </div>
 
       {/* 2. MARQUEE */}
       <div className="flex justify-center">
