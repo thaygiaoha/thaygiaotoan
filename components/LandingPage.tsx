@@ -76,7 +76,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       phoneNumber: quizInfo.phone,
       // Nếu là free thì gửi stk/bank trống
       stk: quizMode === 'gift' ? bankInfo.stk : "Tự do",
-      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do"
+      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do",
+      localStorage.setItem('quiz_student_info', JSON.stringify({
+    ...quizInfo,
+    stk: bankInfo.stk,
+    bankName: bankInfo.bankName
     });
   }
   
