@@ -255,10 +255,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
 
       {/* 5. FOOTER & MODALS (Giữ nguyên logic của bạn) */}
       <footer className="mt-8 border-t border-slate-200 pt-10 pb-6 text-center space-y-4 bg-slate-50/50 rounded-t-[3rem]">
-          <div className="max-w-xs mx-auto mb-4">
-              <button onClick={() => setShowRateModal(true)} className="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-black text-sm shadow-xl hover:scale-105 transition-all border-b-4 border-orange-600 uppercase">
-                ⭐ ĐÁNH GIÁ WEB</button>
-          </div>
           <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">© 2025 KÊNH HỌC TOÁN TRỰC TUYẾN - ADMIN: THẦY HÀ</p>
       </footer>
 
