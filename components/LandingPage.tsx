@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
+const ADMIN_CONFIG = {
+  quizPassword: "66668888", // Thay bằng mật khẩu bạn muốn
+  schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 2", "THPT Lạng Giang số 1", "Khác"],
+  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"] };
 
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
@@ -17,11 +21,7 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, user, onOpenAuth, onOpenVip }) => {
-  const ADMIN_CONFIG = {
-  quizPassword: "66668888", // Thay bằng mật khẩu bạn muốn
-  schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 2", "THPT Lạng Giang số 1", "Khác"],
-  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"] };
-  const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
+    const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
   const [inputPassword, setInputPassword] = useState('');
   const [isOtherSchool, setIsOtherSchool] = useState(false);
   const [isOtherBank, setIsOtherBank] = useState(false);
@@ -59,21 +59,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     return () => clearInterval(interval);
   }, []);
 
-  const handleStartQuiz = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!quizInfo.name || !quizInfo.phone) return alert("Vui lòng nhập đầy đủ họ tên và SĐT!");
-    if (showQuizModal) {
-      onSelectQuiz(showQuizModal.num, showQuizModal.pts, {
-        name: quizInfo.name,
-        class: quizInfo.class,
-        school: quizInfo.school,
-        phoneNumber: quizInfo.phone,
-        stk: bankInfo.stk,
-        bank: bankInfo.bankName
-      });
-    }
-    setShowQuizModal(null);
-  };
+ const handleStartQuiz = (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // 1. Kiểm tra mật khẩu nếu ở chế độ Quà
+  if (quizMode === 'gift' && inputPassword !== ADMIN_CONFIG.quizPassword) {
+    return alert("Mật khẩu Quà QuiZ không chính xác!");
+  }
+
+  // 2. Kiểm tra thông tin bắt buộc
+  if (!quizInfo.name || !quizInfo.phone) return alert("Vui lòng nhập đầy đủ thông tin!");
+  
+  if (showQuizModal) {
+    onSelectQuiz(showQuizModal.num, showQuizModal.pts, {
+      ...quizInfo,
+      phoneNumber: quizInfo.phone,
+      // Nếu là free thì gửi stk/bank trống
+      stk: quizMode === 'gift' ? bankInfo.stk : "Tự do",
+      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do"
+    });
+  }
+  
+  // Reset trạng thái
+  setShowQuizModal(null);
+  setQuizMode(null);
+  setInputPassword('');
+};
 
   const handleRateSubmit = async () => {
     if (isSubmittingRate) return;
