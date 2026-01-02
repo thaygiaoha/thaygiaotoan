@@ -95,24 +95,43 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       `}</style>
 
       {/* 1. HEADER BUTTONS */}
-      <div className="flex justify-center mt-4">
-        <div className="bg-white p-2 rounded-3xl shadow-lg border border-slate-100 flex flex-nowrap overflow-x-auto gap-3 no-scrollbar items-center max-w-full">
-          <div className="bg-red-600 text-white px-6 rounded-2xl shadow-lg flex items-center justify-center h-[60px] border-b-4 border-red-800 animate-pulse shrink-0">
-            <span className="font-black text-sm uppercase">Kiểm tra Online →</span>
+      return (
+    <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
+      
+      {/* 1. Header: Nút chọn lớp & Quiz - Căn chỉnh đồng đều h-[60px] kèm hướng dẫn vuốt mobile */}
+      <div className="flex justify-center">
+      <div className="bg-white p-2 rounded-3xl shadow-lg border border-slate-100 mt-4 overflow-hidden">
+        <div className="flex flex-nowrap overflow-x-auto gap-3 pb-2 pt-1 px-1 no-scrollbar items-center">
+          <div className="flex flex-col items-center shrink-0">
+            <div className="bg-red-600 text-white px-6 rounded-2xl shadow-lg flex items-center justify-center h-[60px] whitespace-nowrap border-b-4 border-red-800 animate-pulse">
+              <span className="font-black text-sm uppercase flex items-center gap-2">
+                <i className="fas fa-edit"></i> Kiểm tra Online →
+              </span>
+            </div>
+            <div className="md:hidden text-[8px] font-black text-red-500 mt-1 uppercase flex items-center gap-1">
+              <i className="fas fa-arrow-left"></i> Trên điện thoại vuốt sang trái
+            </div>
           </div>
-          {[9, 10, 11, 12].map(g => (
-            <button key={g} onClick={() => onSelectGrade(g)} className="px-6 bg-blue-600 text-white border-b-4 border-blue-800 rounded-2xl font-black text-sm shrink-0 hover:brightness-110 h-[60px] min-w-[120px]">
-              LỚP {g}
+          
+          {[
+            {g: 9, icon: 'fas fa-user-graduate'},
+            {g: 10, icon: 'fas fa-user-graduate'},
+            {g: 11, icon: 'fas fa-user-graduate'},
+            {g: 12, icon: 'fas fa-user-graduate'}
+          ].map(item => (
+            <button key={item.g} onClick={() => onSelectGrade(item.g)} className="px-6 bg-blue-600 text-white border-b-4 border-blue-800 rounded-2xl font-black text-sm shrink-0 hover:brightness-110 active:scale-95 transition-all h-[60px] flex items-center justify-center gap-2 min-w-[120px]">
+              <i className={item.icon}></i> LỚP {item.g}
             </button>
           ))}
-          <button onClick={() => setShowQuizModal({num: 10, pts: 1})} className="px-6 bg-orange-500 text-white border-b-4 border-orange-700 rounded-2xl font-black text-sm shrink-0 h-[60px] min-w-[130px]">
-            <i className="fas fa-bolt mr-2"></i> QUIZ 10
+          <button onClick={() => setShowQuizModal({num: 10, pts: 1})} className="px-6 bg-orange-500 text-white border-b-4 border-orange-700 rounded-2xl font-black text-sm shrink-0 hover:brightness-110 h-[60px] uppercase whitespace-nowrap flex items-center justify-center gap-2 min-w-[130px]">
+            <i className="fas fa-bolt"></i> QUIZ 10
           </button>
-          <button onClick={() => setShowQuizModal({num: 20, pts: 0.5})} className="px-6 bg-orange-500 text-white border-b-4 border-orange-700 rounded-2xl font-black text-sm shrink-0 h-[60px] min-w-[130px]">
-            <i className="fas fa-brain mr-2"></i> QUIZ 20
+          <button onClick={() => setShowQuizModal({num: 20, pts: 0.5})} className="px-6 bg-orange-500 text-white border-b-4 border-orange-700 rounded-2xl font-black text-sm shrink-0 hover:brightness-110 h-[60px] uppercase whitespace-nowrap flex items-center justify-center gap-2 min-w-[130px]">
+            <i className="fas fa-brain"></i> QUIZ 20
           </button>
         </div>
       </div>
+     </div>
 
       {/* 2. MARQUEE */}
       <div className="flex justify-center">
