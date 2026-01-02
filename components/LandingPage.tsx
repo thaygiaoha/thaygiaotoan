@@ -69,19 +69,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
 
   // 2. Kiểm tra thông tin bắt buộc
   if (!quizInfo.name || !quizInfo.phone) return alert("Vui lòng nhập đầy đủ thông tin!");
+   localStorage.setItem('quiz_student_info', JSON.stringify({
+    ...quizInfo,
+    stk: bankInfo.stk,
+    bankName: bankInfo.bankName
+  }));
   
-  if (showQuizModal) {
+  if (showQuizModal) {    
     onSelectQuiz(showQuizModal.num, showQuizModal.pts, {
       ...quizInfo,
       phoneNumber: quizInfo.phone,
       // Nếu là free thì gửi stk/bank trống
       stk: quizMode === 'gift' ? bankInfo.stk : "Tự do",
-      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do",
-      localStorage.setItem('quiz_student_info', JSON.stringify({
-    ...quizInfo,
-    stk: bankInfo.stk,
-    bankName: bankInfo.bankName
-    });
+      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do"
+     });
   }
   
   // Reset trạng thái
