@@ -198,10 +198,7 @@ useEffect(() => {
      </div> 
      </div> 
      </div>
-    </div>
-
-
-      {/* 3. Khối nội dung chính - Bố cục cân đối (LG 3 - 7 - 2) */}
+    {/* 3. Khối nội dung chính - Bố cục cân đối (LG 3 - 7 - 2) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         
         {/* CỘT TRÁI: TOP QUIZ */}
@@ -240,59 +237,40 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        {/* 3. CỘT PHẢI: NÚT CHỨC NĂNG */}
-<div className="lg:col-span-2 flex flex-col gap-3">
-  
-  {/* Nút 1 */}
-  <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
-    <i className="fas fa-headset text-lg mb-1"></i>
-    <span>Trợ lý học tập</span>
-  </button>
+        {/* CỘT PHẢI: NÚT CHỨC NĂNG */}
+        <div className="lg:col-span-2 flex flex-col gap-3">
+          <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+            <i className="fas fa-headset text-lg"></i><span>Trợ lý học tập</span>
+          </button>
 
-  {/* Nút 2 */}
-  <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
-    <i className="fas fa-users text-lg mb-1"></i>
-    <span>Đăng ký học Toán</span>
-  </button>
+          <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+            <i className="fas fa-users text-lg"></i><span>Đăng ký học Toán</span>
+          </button>
 
-  {/* NÚT ỨNG DỤNG KHÁC - Đã đưa vào trong div cột phải */}
-  <div className="relative group w-full flex-1">
-    <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2 text-center">
-      <i className="fas fa-th text-lg mb-1"></i>
-      <span>Ứng dụng khác <i className="fas fa-chevron-down ml-1 text-[8px]"></i></span>
-    </button>
-    
-    {/* Menu sổ lên trên (bottom-full) */}
-    <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block animate-fade-in z-[100]">
-      <div className="p-2 flex flex-col gap-1">
-        {/* Đảm bảo biến OTHER_APPS đã được định nghĩa ở đầu file */}
-        {[
-          { label: "Nhóm Zalo", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
-          { label: "Kho tài liệu", icon: "fas fa-book", link: "https://..." },
-          { label: "Máy tính Casio", icon: "fas fa-calculator", link: "https://..." }
-        ].map((app, idx) => (
-          <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
-            <i className={`${app.icon} text-teal-600 w-5`}></i>
-            <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
-          </a>
-        ))}
+          {/* NÚT ỨNG DỤNG KHÁC - DROPDOWN */}
+          <div className="relative group w-full flex-1">
+            <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
+              <i className="fas fa-th text-lg"></i><span>Ứng dụng khác <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
+            </button>
+            <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-fade-in">
+              {OTHER_APPS.map((app, idx) => (
+                <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
+                  <i className={`${app.icon} text-teal-600 w-5`}></i>
+                  <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+            <i className="fas fa-sign-in-alt text-lg"></i><span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
+          </button>
+
+          <button onClick={onOpenVip} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-orange-700 p-2">
+            <i className="fas fa-gem text-lg"></i><span>Nâng Cấp VIP</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-
-  {/* Nút 3 */}
-  <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2 text-center">
-    <i className="fas fa-sign-in-alt text-lg mb-1"></i>
-    <span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
-  </button>
-
-  {/* Nút 4 */}
-  <button onClick={onOpenVip} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-orange-700 p-2 text-center">
-    <i className="fas fa-gem text-lg mb-1"></i>
-    <span>Nâng Cấp VIP</span>
-  </button>
-
-</div>
       {/* 4. Tin tức */}
       <div className="bg-white p-6 rounded-[2.5rem] shadow-xl border border-slate-100 border-b-8 border-slate-200">
         <h4 className="font-black text-blue-700 uppercase text-xs tracking-widest border-l-4 border-blue-600 pl-4 mb-6">Thông báo hệ thống</h4>
