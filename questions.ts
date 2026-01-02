@@ -22,7 +22,7 @@ id: 100002,
 classTag: "1001.1",
 part: "PHẦN I. Câu trắc nghiệm nhiều phương án lựa chọn",
 type: "mcq",
-question: "Cho mệnh đề $P: \"\\forall x \\in \\mathbb{R}, x^2 + 1 > 0\"$. Mệnh đề phủ định của $P$ là",
+question: "Cho mệnh đề $P: \"\\forall x \\in \\mathbb{R}, x^2 + 1 > 0\"$. Mệnh đề phủ định của $P$ là:",
 o: [
 "$\\overline{P}: \"\\exists x \\in \\mathbb{R}, x^2 + 1 \\le 0\"$. (Đ 1)",
 "B $\\overline{P}: \"\\forall x \\in \\mathbb{R}, x^2 + 1 \\le 0\"$.",
