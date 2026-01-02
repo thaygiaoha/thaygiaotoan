@@ -1,5 +1,5 @@
 
-const SPREADSHEET_ID = "1y7OmTFZxgdLgGUtoNpo7WTIVwJyeTVE9rzSzWaY_Btc";
+const SPREADSHEET_ID = "16w4EzHhTyS1CnTfJOWE7QQNM0o2mMQIqePpPK8TEYrg";
 
 /**
  * Hàm xóa dữ liệu Quiz vào 23:59 Chủ Nhật hàng tuần.
