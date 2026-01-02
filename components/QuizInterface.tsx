@@ -48,19 +48,23 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ config, student, question
     const timeDisplay = formatTime(elapsedSeconds);
 
     onFinish({ 
-      type: isQuizMode ? 'quiz' : 'exam',
-      timestamp: new Date().toISOString(), 
-      examCode: config.id, 
-      sbd: student.sbd, 
-      name: student.name, 
-      className: student.class,
-      school: student.school,
-      phoneNumber: student.phoneNumber,
-      score, 
-      totalTime: timeDisplay, 
-      tabSwitches,
-      details: answers 
-    });
+    type: isQuizMode ? 'quiz' : 'exam',
+    timestamp: new Date().toISOString(), 
+    examCode: config.id, 
+    sbd: student.sbd, 
+    name: student.name, 
+    className: student.class,
+    school: student.school,
+    phoneNumber: student.phoneNumber,   
+    score, 
+    totalTime: timeDisplay, 
+       // THÊM 2 DÒNG NÀY VÀO ĐÂY:
+    stk: student.stk || "",
+    bank: student.bank || "",
+    // -----------------------
+    tabSwitches,
+    details: answers 
+  });
   }, [answers, config, questions, student, timeLeft, tabSwitches, isQuizMode, onFinish]);
 
   useEffect(() => {
