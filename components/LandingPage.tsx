@@ -4,7 +4,7 @@ import { AppUser, Student } from '../types';
 
 const ADMIN_CONFIG = {
   quizPassword: "66668888",
-  schools: ["THPT Yên Dũng số 2", "THPT Lạng Giang số 1", "Khác"],
+  schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 1", "THPT Lạng Giang số 1", "Khác"],
   banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"]
 };
 
