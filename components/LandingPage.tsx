@@ -254,10 +254,30 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       </div>
 
       {/* 5. FOOTER & MODALS (Giữ nguyên logic của bạn) */}
-      <footer className="mt-8 border-t border-slate-200 pt-10 pb-6 text-center space-y-4 bg-slate-50/50 rounded-t-[3rem]">
-          <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">© 2025 KÊNH HỌC TOÁN TRỰC TUYẾN - ADMIN: THẦY HÀ</p>
+       <footer className="mt-8 border-t border-slate-200 pt-10 pb-6 text-center space-y-8 bg-slate-50/50 rounded-t-[3rem]">
+        <div className="max-w-xs mx-auto">
+          <button onClick={() => setShowRateModal(true)} className="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-black text-sm shadow-xl hover:scale-105 transition-all active:scale-95 border-b-4 border-orange-600 uppercase tracking-widest flex items-center justify-center gap-2">
+            <span className="text-xl">⭐</span> ĐÁNH GIÁ WEB
+          </button>
+        </div>
+        <div className="flex justify-center gap-8">
+          {[
+            { id: 'fb', icon: 'fa-facebook-f', color: '#1877F2', link: 'https://www.facebook.com/hoctoanthayha.bg' },
+            { id: 'tw', icon: 'fa-twitter', color: '#1DA1F2', link: 'https://x.com/Math_teacher_Ha' },
+            { id: 'tg', icon: 'fa-telegram-plane', color: '#229ED9', link: 'https://www.telegram.org' }
+          ].map((social) => (
+            <a key={social.id} href={social.link} target="_blank" rel="noreferrer" style={{ backgroundColor: social.color }}
+              className="w-12 h-12 rounded-2xl text-white flex items-center justify-center text-xl shadow-lg hover:rotate-12 hover:scale-110 transition-all border-b-4 border-black/20"
+            >
+              <i className={`fab ${social.icon}`}></i>
+            </a>
+          ))}
+        </div>
+        <div className="text-slate-400 space-y-1">
+            <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">© 2025 KÊNH HỌC TOÁN TRỰC TUYẾN CHUYÊN NGHIỆP</p>
+            <p className="text-[9px] font-bold opacity-60 uppercase tracking-tighter">Admin: Nguyễn Văn Hà - THPT Yên Dũng số 2</p>
+        </div>
       </footer>
-
       {/* MODAL QUIZ (Sửa lỗi step-by-step) */}
       {showQuizModal && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
@@ -316,22 +336,41 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       )}
 
       {/* MODAL ĐÁNH GIÁ (Giữ nguyên của bạn) */}
-      {showRateModal && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
-              <div className="bg-white p-8 rounded-[2rem] w-full max-w-sm text-center">
-                  <h3 className="font-black mb-4 uppercase">Đánh giá hệ thống</h3>
-                  <div className="flex justify-center gap-2 mb-4">
-                      {[1,2,3,4,5].map(s => <button key={s} onClick={() => setRating(s)} className={`text-3xl ${s <= rating ? 'text-yellow-400' : 'text-slate-200'}`}>★</button>)}
+       {showRateModal && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-lg">
+          <div className="bg-white w-full max-sm rounded-[3rem] p-8 shadow-2xl border border-slate-100 text-center space-y-6">
+            <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight">Đánh giá Web</h3>
+            <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-left">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center">Tổng: {totalRatings} lượt đánh giá</p>
+              {[5, 4, 3, 2, 1].map(star => {
+                const count = stats.ratings[star] || 0;
+                const percent = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
+                return (
+                  <div key={star} className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold w-4 text-slate-600">{star}★</span>
+                    <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div className="h-full bg-yellow-400" style={{ width: `${percent}%` }}></div>
+                    </div>
+                    <span className="text-[9px] font-bold text-slate-400 w-6 text-right">{count}</span>
                   </div>
-                  <textarea className="w-full p-3 bg-slate-100 rounded-xl mb-4 h-24" placeholder="Cảm nhận của bạn..." onChange={e => setComment(e.target.value)}></textarea>
-                  <div className="flex gap-2">
-                      <button onClick={() => setShowRateModal(false)} className="flex-1 p-3 bg-slate-200 rounded-xl font-bold">ĐÓNG</button>
-                      <button onClick={() => alert("Cảm ơn bạn!")} className="flex-1 p-3 bg-indigo-600 text-white rounded-xl font-bold">GỬI</button>
-                  </div>
-              </div>
+                );
+              })}
+            </div>
+            <div className="flex justify-center gap-3">
+              {[1, 2, 3, 4, 5].map(star => (
+                <button key={star} onClick={() => setRating(star)} className="text-4xl transition-transform hover:scale-125 focus:outline-none">
+                  {star <= rating ? <span className="text-yellow-400">★</span> : <span className="text-slate-200">★</span>}
+                </button>
+              ))}
+            </div>
+            <textarea className="w-full p-4 bg-slate-50 rounded-2xl border-none font-black text-sm outline-none h-24" placeholder="Nhập nhận xét..." value={comment} onChange={e => setComment(e.target.value)}></textarea>
+            <div className="flex gap-3">
+              <button onClick={() => setShowRateModal(false)} className="flex-1 py-3 bg-slate-100 text-slate-500 rounded-xl font-black uppercase text-xs">Đóng</button>
+              <button onClick={handleRateSubmit} disabled={isSubmittingRate} className="flex-2 px-8 py-3 bg-indigo-600 text-white rounded-xl font-black uppercase text-xs shadow-lg">{isSubmittingRate ? "Đang gửi..." : "Gửi đánh giá"}</button>
+            </div>
           </div>
+        </div>
       )}
-
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     </div>
   );
