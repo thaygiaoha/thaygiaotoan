@@ -95,7 +95,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       `}</style>
 
       {/* 1. HEADER BUTTONS */}
-      return (
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
       
       {/* 1. Header: Nút chọn lớp & Quiz - Căn chỉnh đồng đều h-[60px] kèm hướng dẫn vuốt mobile */}
