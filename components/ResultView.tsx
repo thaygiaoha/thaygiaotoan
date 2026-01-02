@@ -22,7 +22,7 @@ const ResultView: React.FC<ResultViewProps> = ({ result, questions, onBack }) =>
           <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h2 className="text-4xl font-black text-slate-800 mb-2 uppercase tracking-tight">KẾT QUẢ BÀI THI</h2>
-        <p className="text-slate-500 mb-10 font-bold uppercase text-xs tracking-widest">Hệ thống thi trực tuyến môn Toán</p>
+        <p className="text-slate-500 mb-10 font-bold uppercase text-xs tracking-widest">Hệ thống thi trực tuyến THPT Yên Dũng số 2</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 my-10 text-left">
           <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 shadow-inner">
