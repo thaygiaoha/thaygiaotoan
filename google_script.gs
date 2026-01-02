@@ -1,5 +1,5 @@
 
-const SPREADSHEET_ID = "16w4EzHhTyS1CnTfJOWE7QQNM0o2mMQIqePpPK8TEYrg";
+const SPREADSHEET_ID = "1y7OmTFZxgdLgGUtoNpo7WTIVwJyeTVE9rzSzWaY_Btc";
 
 /**
  * Hàm xóa dữ liệu Quiz vào 23:59 Chủ Nhật hàng tuần.
@@ -110,7 +110,7 @@ function doPost(e) {
       let sheetRate = ss.getSheetByName("danhgia");
       if (!sheetRate) {
         sheetRate = ss.insertSheet("danhgia");
-        sheetRate.appendRow(["Timestamp", "stars", "name", "class", "idNumber", "taikhoanapp"]);
+        sheetRate.appendRow(["Timestamp", "sosao", "name", "class", "idNumber", "taikhoanapp"]);
       }
       sheetRate.appendRow([new Date(), data.stars, data.name, data.class, data.idNumber, data.taikhoanapp]);
       return createResponse("success", "OK");
