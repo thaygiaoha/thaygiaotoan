@@ -83,7 +83,37 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     setShowQuizModal(null);
     setQuizMode(null);
   };
-
+  const handleRateSubmit = async () => {
+    if (isSubmittingRate) return;
+    setIsSubmittingRate(true);
+    try {
+      const payload = {
+        type: 'rating',
+        stars: rating,
+        comment: comment,
+        name: user?.name || quizInfo.name || "Khách",
+        class: quizInfo.class || "Tự do",
+        idNumber: user?.phoneNumber || "GUEST",
+        taikhoanapp: user?.isVip ? "VIP" : "FREE"
+      };
+      await fetch(DANHGIA_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
+      });
+       if (rating >= 4) {
+        alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${rating} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
+      } else {
+        // Dưới 4 sao (1, 2, 3 sao)
+        alert(`😡 Này! Sao đánh giá có ${rating} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
+      }
+      setShowRateModal(false);
+    } catch (e) {
+      alert("Gửi đánh giá thất bại!");
+    } finally {
+      setIsSubmittingRate(false);
+    }
+  };
   const totalRatings = (Object.values(stats.ratings) as number[]).reduce((a, b) => a + b, 0);
 
   return (
@@ -226,7 +256,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       {/* 5. FOOTER & MODALS (Giữ nguyên logic của bạn) */}
       <footer className="mt-8 border-t border-slate-200 pt-10 pb-6 text-center space-y-4 bg-slate-50/50 rounded-t-[3rem]">
           <div className="max-w-xs mx-auto mb-4">
-              <button onClick={() => setShowRateModal(true)} className="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-black text-sm shadow-xl hover:scale-105 transition-all border-b-4 border-orange-600 uppercase">⭐ ĐÁNH GIÁ WEB</button>
+              <button onClick={() => setShowRateModal(true)} className="w-full py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-black text-sm shadow-xl hover:scale-105 transition-all border-b-4 border-orange-600 uppercase">
+                ⭐ ĐÁNH GIÁ WEB</button>
           </div>
           <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">© 2025 KÊNH HỌC TOÁN TRỰC TUYẾN - ADMIN: THẦY HÀ</p>
       </footer>
