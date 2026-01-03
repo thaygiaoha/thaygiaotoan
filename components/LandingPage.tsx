@@ -177,7 +177,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         
         {/* CỘT TRÁI: TOP 10 */}
         <div className="lg:col-span-3 bg-white rounded-2xl shadow-md p-3 border border-slate-100 flex flex-col h-full">
-          <h3 className="text-center font-black text-indigo-600 text-sm mb-3 uppercase italic">👑 TOP 10 QUIZ TUẦN</h3>
+          <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
           <div className="space-y-2 overflow-y-auto max-h-[420px] pr-1 no-scrollbar flex-grow">
             {stats.top10?.length > 0 ? stats.top10.map((item, index) => (
               <div key={index} className="flex justify-between items-center bg-slate-50 rounded-xl p-3 border border-slate-100">
