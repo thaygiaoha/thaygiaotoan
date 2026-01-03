@@ -76,9 +76,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     
     onSelectQuiz(showQuizModal!.num, showQuizModal!.pts, {
       ...quizInfo,
-      phoneNumber: "'" + quizInfo.phone,
-      stk: quizMode === 'gift' ? "'" + bankInfo.stk : "Tự do",
-      bank: quizMode === 'gift' ? "'" + bankInfo.bankName : "Tự do"
+      phoneNumber: quizInfo.phone,
+      stk: quizMode === 'gift' ? bankInfo.stk : "Tự do",
+      bank: quizMode === 'gift' ? bankInfo.bankName : "Tự do"
     });
     setShowQuizModal(null);
     setQuizMode(null);
