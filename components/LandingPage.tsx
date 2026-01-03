@@ -239,7 +239,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
            {/* NÚT Chọn môn học (DROPDOWN) */}
           <div className="relative group w-full flex-1">
             <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
-              <i className="fas fa-graduation-cap-lg"></i><span>Chọn môn học <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
+              <i className="fas fa-graduation-cap-2x"></i><span>Chọn môn học <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
             </button>
             <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
               {OTHER_APPS.map((app, idx) => (
