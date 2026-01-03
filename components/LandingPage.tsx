@@ -86,6 +86,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     }, 4000);
     return () => clearInterval(interval);
   }, []);
+  const [top10Data, setTop10Data] = useState([]);
+
+  const fetchTop10 = async () => {
+  try {
+    const response = await fetch('YOUR_SCRIPT_URL?sheet=Top10');
+    const data = await response.json();
+    setTop10Data(data.slice(0, 10)); // Chỉ lấy đúng 10 người đầu tiên
+  } catch (error) {
+    console.error("Lỗi lấy Top 10:", error);
+  }
+};
+
+useEffect(() => {
+  fetchTop10();
+}, []);
 
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
@@ -240,29 +255,70 @@ const handleRate = (stars: number) => {
       {/* 3. MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
        {/* 4. CỘT TRÁI: TOP 10 */}
-         <div className="lg:col-span-3 flex flex-col">
-          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
-            <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
-               <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
+        <div className="lg:col-span-3 flex flex-col">
+  <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
+    {/* Header giữ nguyên phong cách của bạn */}
+    <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
+      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN
+    </div>
+
+    {/* Nội dung danh sách được nâng cấp */}
+    <div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
+      {top10Data.length > 0 ? top10Data.map((item, index) => {
+        // Xác định Icon Cúp và màu sắc dựa trên thứ hạng (index)
+        let rankIcon = "fas fa-medal text-slate-300"; 
+        let nameColor = "text-slate-700";
+        let bgColor = "bg-white";
+
+        if (index === 0) {
+          rankIcon = "fas fa-trophy text-yellow-400 animate-bounce";
+          nameColor = "text-yellow-700 font-black";
+          bgColor = "bg-yellow-50/50 border-yellow-100";
+        } else if (index === 1) {
+          rankIcon = "fas fa-trophy text-slate-400";
+          nameColor = "text-slate-800 font-bold";
+          bgColor = "bg-slate-50";
+        } else if (index === 2) {
+          rankIcon = "fas fa-trophy text-orange-400";
+          nameColor = "text-slate-800 font-bold";
+        }
+
+        return (
+          <div key={index} className={`flex items-center gap-2 p-3 rounded-2xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.02] ${bgColor}`}>
+            {/* Cột Cúp/Thứ hạng */}
+            <div className="w-8 flex justify-center shrink-0">
+              <i className={`${rankIcon} text-base`}></i>
             </div>
-            <div className="p-2 space-y-1 flex-grow bg-slate-50 overflow-y-auto max-h-[420px] custom-scrollbar">
-              {stats.top10.length > 0 ? stats.top10.map((item) => (
-                <div key={item.rank} className="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.01]">
-                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 pr-1">
-                    <span className="font-bold text-slate-800 text-[10px] truncate">{item.rank}. {item.name}</span>
-                    <span className="text-[9px] text-slate-400 font-bold">{formatPhoneHidden(item.phone)}</span>
-                  </div>
-                  <div className="text-right flex flex-col shrink-0">
-                    <span className="font-black text-blue-600 text-[10px] leading-none">{item.score.toFixed(1)} đ</span>
-                    <span className="text-[8px] text-slate-400 mt-0.5"><i className="far fa-clock mr-0.5"></i>{item.time}</span>
-                  </div>
-                </div>
-              )) : (
-                <div className="p-10 text-center text-slate-400 text-xs uppercase font-black">Đang cập nhật...</div>
-              )}
+
+            {/* Cột Thông tin: Tên đầy đủ & SĐT bên dưới */}
+            <div className="flex-1 min-w-0">
+              <div className={`text-[10px] uppercase truncate ${nameColor}`}>
+                {index + 1}. {item.name}
+              </div>
+              <div className="text-[9px] text-slate-400 font-bold italic">
+                {item.idNumber} {/* Hiện SĐT của bạn ấy */}
+              </div>
+            </div>
+
+            {/* Cột Điểm & Thời gian bên dưới */}
+            <div className="text-right shrink-0">
+              <div className="text-[11px] font-black text-blue-600 leading-none">
+                {item.score} <span className="text-[8px]">đ</span>
+              </div>
+              <div className="text-[8px] text-slate-400 mt-0.5 font-bold">
+                <i className="far fa-clock mr-0.5"></i>{item.time}s
+              </div>
             </div>
           </div>
+        );
+      }) : (
+        <div className="p-10 text-center text-slate-400 text-[10px] uppercase font-black tracking-widest">
+          🚀 Đang tải bảng vàng...
         </div>
+      )}
+    </div>
+  </div>
+</div>
 
         {/* 5.CAROUSEL */}
         <div className="lg:col-span-7">
