@@ -64,17 +64,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
     top10: []
   });
-
- useEffect(() => {
-  setStats(prev => ({
-    ...prev,
-    top10: [
-      { name: "TEST A", score: 10, time: 60, idPhone: "098xxx1111" },
-      { name: "TEST B", score: 9, time: 80, idPhone: "098xxx2222" }
-    ]
-  }));
-}, []);
-
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
     if (quizMode === 'gift' && inputPassword !== ADMIN_CONFIG.quizPassword) return alert("Mật khẩu Quà QuiZ không chính xác!");
