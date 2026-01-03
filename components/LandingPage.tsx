@@ -107,60 +107,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     window.open(link, '_blank');
     setShowSubjectModal(false);
   };
-const handleRate = async (stars: number) => {
-  if (isSubmittingRate) return;
-  setIsSubmittingRate(true);
-
-  try {
-    const payload = {
-      type: 'rating',
-      stars: stars,
-      comment: "Đánh giá nhanh từ Landing",
-      name: user?.name || "Khách",
-      idNumber: user?.phoneNumber || "GUEST",
-      taikhoanapp: user?.isVip ? "VIP" : "FREE"
-    };
-
-    // 1. Gửi dữ liệu đi
-    await fetch(DANHGIA_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(payload)
-    });
-
-    // 2. Phản hồi bằng alert (if...else bản cũ của bạn)
-    if (stars >= 4) {
-      alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
-    } else {
-      alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
+const handleRate = (stars: number) => {
+  // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
+  setStats(prev => ({
+    ...prev,
+    ratings: {
+      ...prev.ratings,
+      [stars]: (prev.ratings[stars] || 0) + 1
     }
+  }));
 
-    // 3. Hiển thị trạng thái thành công trong Modal
-    setHasRated(true);
-
-    // 4. Đóng modal
-    setTimeout(() => {
-      setShowRateModal(false);
-      setHasRated(false);
-      setIsSubmittingRate(false);
-    }, 1200);
-
-  } catch (e) {
-    alert("Gửi đánh giá thất bại!");
-    setIsSubmittingRate(false);
+  // 2. Thông báo kiểu "gắt" hoặc "vui vẻ" như bản cũ của bạn
+  if (stars >= 4) {
+    alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
+  } else {
+    alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
   }
+
+  // 3. Hiển thị trạng thái "Cảm ơn" trong Modal
+  setHasRated(true);
+
+  // 4. Đóng modal sau 1.2 giây
+  setTimeout(() => {
+    setShowRateModal(false);
+    setHasRated(false);
+  }, 1200);
 };
-  
-  const totalRatings = (Object.values(stats.ratings) as number[]).reduce((a, b) => a + b, 0);
-
-  return (
-    <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden px-2">
-      <style>{`
-        @keyframes marquee-slow { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .animate-marquee-slow { animation: marquee-slow 30s linear infinite; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-      `}</style>
-
       {/* 1. HEADER BUTTONS */}
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
       
