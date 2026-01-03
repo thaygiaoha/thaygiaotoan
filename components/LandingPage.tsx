@@ -115,7 +115,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     confetti.className = 'confetti-piece';
     confetti.style.left = Math.random() * 100 + 'vw';
     confetti.style.animationDelay = Math.random() * 2 + 's';
-    document.body.appendChild(confetti1);
+    document.body.appendChild(confetti);
 
     // Xóa emoji sau khi rơi xong để nhẹ máy
     setTimeout(() => confetti.remove(), 5000);
