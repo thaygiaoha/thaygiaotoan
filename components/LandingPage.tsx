@@ -196,20 +196,32 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       </div>
       {/* 3. MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
-        {/* TOP 10 */}
-        <div className="lg:col-span-3 bg-white rounded-[2rem] shadow-xl border overflow-hidden border-b-4 border-blue-200">
-          <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center">🏆 TOP 10 QUIZ TUẦN</div>
-          <div className="p-2 space-y-1 max-h-[420px] overflow-y-auto no-scrollbar">
-            {stats.top10.map((item, i) => (
-              <div key={i} className="flex justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                <span className="font-bold text-[10px] truncate">{i+1}. {item.name} {rankIcon(i+1)}</span>
-                <span className="font-black text-blue-600 text-[10px]">{item.score}đ</span>
-              </div>
-            ))}
+       {/* 4. CỘT TRÁI: TOP 10 */}
+         <div className="lg:col-span-3 flex flex-col">
+          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
+            <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
+               <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
+            </div>
+            <div className="p-2 space-y-1 flex-grow bg-slate-50 overflow-y-auto max-h-[420px] custom-scrollbar">
+              {stats.top10.length > 0 ? stats.top10.map((item) => (
+                <div key={item.rank} className="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.01]">
+                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 pr-1">
+                    <span className="font-bold text-slate-800 text-[10px] truncate">{item.rank}. {item.name}</span>
+                    <span className="text-[9px] text-slate-400 font-bold">{formatPhoneHidden(item.phone)}</span>
+                  </div>
+                  <div className="text-right flex flex-col shrink-0">
+                    <span className="font-black text-blue-600 text-[10px] leading-none">{item.score.toFixed(1)} đ</span>
+                    <span className="text-[8px] text-slate-400 mt-0.5"><i className="far fa-clock mr-0.5"></i>{item.time}</span>
+                  </div>
+                </div>
+              )) : (
+                <div className="p-10 text-center text-slate-400 text-xs uppercase font-black">Đang cập nhật...</div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* CAROUSEL */}
+        {/* 5.CAROUSEL */}
         <div className="lg:col-span-7">
           <div className="relative h-64 md:h-full min-h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
             {IMAGES_CAROUSEL.map((img, idx) => (
@@ -218,7 +230,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </div>
         </div>
 
-        {/* ACTIONS */}
+        {/* 6. CỘT PHẢI ACTIONS */}
         <div className="lg:col-span-2 flex flex-col gap-3">
           <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-indigo-900 p-2">
             <i className="fas fa-headset text-lg"></i><br/>Trợ lý học tập
@@ -255,7 +267,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </button>
         </div>
       </div>
-      {/* MODAL CHỌN MÔN (2 CỘT) */}
+      {/* 7.MODAL CHỌN MÔN (2 CỘT) */}
       {showSubjectModal && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
           <div className="bg-white w-full max-w-2xl rounded-[2.5rem] p-6 shadow-2xl flex flex-col max-h-[90vh]">
