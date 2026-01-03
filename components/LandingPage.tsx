@@ -248,7 +248,7 @@ const handleRate = (stars: number) => {
      <div className="flex justify-center">
         <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
           <div className="animate-marquee-slow whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest">
-            ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+            ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức!                 ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
           </div>
         </div>
       </div>
