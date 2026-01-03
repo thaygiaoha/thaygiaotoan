@@ -19,7 +19,9 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ config, student, question
       answer: q.type === 'true-false' ? [undefined, undefined, undefined, undefined] : null 
     }))
   );
-  const [timeLeft, setTimeLeft] = useState(config.time * 60);
+  const TOTAL_TIME = config.time * 60; // giây
+  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+  
   const [tabSwitches, setTabSwitches] = useState(0);
   const hasFinished = useRef(false);
 
@@ -44,7 +46,7 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ config, student, question
       }
     });
 
-    const elapsedSeconds = config.time * 60 - timeLeft;
+    const elapsedSeconds = TOTAL_TIME - timeLeft;
     const timeDisplay = formatTime(elapsedSeconds);
 
     onFinish({ 
