@@ -7,6 +7,7 @@ const ADMIN_CONFIG = {
   schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 1", "THPT Lạng Giang số 1", "Khác"],
   banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"]
 };
+ const BTN_CLASS = "w-full h-[72px] flex flex-col items-center justify-center gap-1 rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 p-2";
 
 const OTHER_APPS = [
   { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
@@ -21,7 +22,7 @@ const rankIcon = (rank: number) => {
   if (rank === 3) return "🥉";
   return "";
 };
- const BTN_CLASS = "w-full h-[72px] flex flex-col items-center justify-center gap-1 rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 p-2";
+
 
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
