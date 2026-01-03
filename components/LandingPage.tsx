@@ -310,40 +310,63 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       {/* (Lược bớt phần hiển thị để tiết kiệm không gian, bạn có thể thêm lại y hệt bản cũ) */}
         {/* MODAL ĐÁNH GIÁ (Giữ nguyên của bạn) */}
        {showRateModal && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-lg">
-          <div className="bg-white w-full max-sm rounded-[3rem] p-8 shadow-2xl border border-slate-100 text-center space-y-6">
-            <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight">Đánh giá Web</h3>
-            <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-left">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center">Tổng: {totalRatings} lượt đánh giá</p>
-              {[5, 4, 3, 2, 1].map(star => {
-                const count = stats.ratings[star] || 0;
-                const percent = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
-                return (
-                  <div key={star} className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold w-4 text-slate-600">{star}★</span>
-                    <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-yellow-400" style={{ width: `${percent}%` }}></div>
-                    </div>
-                    <span className="text-[9px] font-bold text-slate-400 w-6 text-right">{count}</span>
-                  </div>
-                );
-              })}
+  <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-lg">
+    {/* Thay đổi quan trọng: w-full max-w-md để bảng không bị tràn */}
+    <div className="bg-white w-full max-w-md rounded-[3rem] p-8 shadow-2xl border border-slate-100 text-center space-y-6 animate-fade-in">
+      <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight">Đánh giá Web</h3>
+      
+      <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-left">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center">
+          Tổng: {totalRatings} lượt đánh giá
+        </p>
+        {[5, 4, 3, 2, 1].map(star => {
+          const count = stats.ratings[star] || 0;
+          const percent = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
+          return (
+            <div key={star} className="flex items-center gap-2">
+              <span className="text-[10px] font-bold w-4 text-slate-600">{star}★</span>
+              <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div className="h-full bg-yellow-400" style={{ width: `${percent}%` }}></div>
+              </div>
+              <span className="text-[9px] font-bold text-slate-400 w-6 text-right">{count}</span>
             </div>
-            <div className="flex justify-center gap-3">
-              {[1, 2, 3, 4, 5].map(star => (
-                <button key={star} onClick={() => setRating(star)} className="text-4xl transition-transform hover:scale-125 focus:outline-none">
-                  {star <= rating ? <span className="text-yellow-400">★</span> : <span className="text-slate-200">★</span>}
-                </button>
-              ))}
-            </div>
-            <textarea className="w-full p-4 bg-slate-50 rounded-2xl border-none font-black text-sm outline-none h-24" placeholder="Nhập nhận xét..." value={comment} onChange={e => setComment(e.target.value)}></textarea>
-            <div className="flex gap-3">
-              <button onClick={() => setShowRateModal(false)} className="flex-1 py-3 bg-slate-100 text-slate-500 rounded-xl font-black uppercase text-xs">Đóng</button>
-              <button onClick={handleRateSubmit} disabled={isSubmittingRate} className="flex-2 px-8 py-3 bg-indigo-600 text-white rounded-xl font-black uppercase text-xs shadow-lg">{isSubmittingRate ? "Đang gửi..." : "Gửi đánh giá"}</button>
-            </div>
-          </div>
-        </div>
-      )}
+          );
+        })}
+      </div>
+
+      <div className="flex justify-center gap-3">
+        {[1, 2, 3, 4, 5].map(star => (
+          <button key={star} onClick={() => setRating(star)} className="text-4xl transition-transform hover:scale-125 focus:outline-none">
+            {star <= rating ? <span className="text-yellow-400">★</span> : <span className="text-slate-200">★</span>}
+          </button>
+        ))}
+      </div>
+
+      <textarea 
+        className="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold text-sm outline-none h-24 resize-none" 
+        placeholder="Nhập nhận xét..." 
+        value={comment} 
+        onChange={e => setComment(e.target.value)}
+      ></textarea>
+
+      <div className="flex gap-3">
+        <button 
+          onClick={() => setShowRateModal(false)} 
+          className="flex-1 py-3 bg-slate-100 text-slate-500 rounded-xl font-black uppercase text-xs"
+        >
+          Đóng
+        </button>
+        <button 
+          onClick={handleRateSubmit} 
+          disabled={isSubmittingRate} 
+          className="flex-[2] px-8 py-3 bg-indigo-600 text-white rounded-xl font-black uppercase text-xs shadow-lg"
+        >
+          {isSubmittingRate ? "Đang gửi..." : "Gửi đánh giá"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
   {/* MODAL QUIZ (Sửa lỗi step-by-step) */}
       {showQuizModal && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
