@@ -259,7 +259,7 @@ const handleRate = (stars: number) => {
   <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
     {/* Header giữ nguyên phong cách của bạn */}
     <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
-      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN
+      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN <br/> (Chụp nhanh: 12:00 chủ nhật)
     </div>
 
     {/* Nội dung danh sách được nâng cấp */}
