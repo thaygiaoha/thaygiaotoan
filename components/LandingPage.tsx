@@ -200,7 +200,7 @@ const handleRate = (stars: number) => {
           <div className="flex flex-col items-center shrink-0">
             <div className="bg-red-600 text-white px-6 rounded-2xl shadow-lg flex items-center justify-center h-[60px] whitespace-nowrap border-b-4 border-red-800 animate-pulse">
               <span className="font-black text-sm uppercase flex items-center gap-2">
-                <i className="fas fa-edit"></i> Kiểm tra Online →
+                <i className="fas fa-edit"></i> Kiểm tra và QuiZ ⇄
               </span>
             </div>
             <div className="md:hidden text-[8px] font-black text-red-500 mt-1 uppercase flex items-center gap-1">
