@@ -14,8 +14,7 @@ const OTHER_APPS = [
   { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
   { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
 ];
-const BTN_CLASS =
-  "w-full h-[72px] flex flex-col items-center justify-center gap-1 rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 p-2";
+
 const rankIcon = (rank: number) => {
   if (rank === 1) return "🥇";
   if (rank === 2) return "🥈";
@@ -214,11 +213,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         </div>
 
         {/* CỘT PHẢI: ACTIONS */}
-        <button
-          onClick={() => window.open("https://new-chat-bot-two.vercel.app/", "_blank")}
-            className={`${BTN_CLASS} bg-indigo-600 text-white border-indigo-900`}>           
-          <i className="fas fa-headset text-2xl"></i>
-          <span>Trợ lý học tập</span>
+        <div className="lg:col-span-2 flex flex-col gap-3">
+          <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+            <i className="fas fa-headset text-lg"></i><span>Trợ lý học tập</span>
           </button>
 
           <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
@@ -229,20 +226,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           <div className="relative group w-full flex-1">
             <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
               <i className="fas fa-th text-lg"></i><span>Ứng dụng khác <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
-            </button>
-            <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
-              {OTHER_APPS.map((app, idx) => (
-                <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
-                  <i className={`${app.icon} text-teal-600 w-5`}></i>
-                  <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
-           {/* NÚT Chọn môn học (DROPDOWN) */}
-          <div className="relative group w-full flex-1">
-            <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
-              <i className="fas fa-graduation-cap-2x"></i><span>Chọn môn học <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
             </button>
             <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
               {OTHER_APPS.map((app, idx) => (
