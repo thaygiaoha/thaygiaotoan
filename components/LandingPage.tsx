@@ -108,6 +108,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     window.open(link, '_blank');
     setShowSubjectModal(false);
   };
+  const fireConfetti = () => {
+  const emojis = ['🎉', '✨', '⭐', '❤️', '🔥'];
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement('div');
+    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    document.body.appendChild(confetti);
+    
+    // Xóa emoji sau khi rơi xong để nhẹ máy
+    setTimeout(() => confetti.remove(), 5000);
+  }
+};
 const handleRate = (stars: number) => {
   // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
   setStats(prev => ({
@@ -120,6 +134,7 @@ const handleRate = (stars: number) => {
 
   // 2. Thông báo kiểu "gắt" hoặc "vui vẻ" như bản cũ của bạn
   if (stars >= 4) {
+    fireConfetti(); // Pháo hoa bằng emoji nổ tung!
     alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
   } else {
     alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
@@ -139,9 +154,18 @@ const handleRate = (stars: number) => {
   return (
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden px-2">
       <style>{`
-        @keyframes marquee-slow { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .animate-marquee-slow { animation: marquee-slow 30s linear infinite; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @keyframes confetti-fall {
+        0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        .confetti-piece {
+        position: fixed;
+        top: -50px;
+        font-size: 24px;
+        z-index: 999;
+        pointer-events: none;
+        animation: confetti-fall 3s linear forwards;
+      }
       `}</style>
   {/* 1. HEADER BUTTONS */}
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
