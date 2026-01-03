@@ -133,15 +133,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   ];
 
   for (let i = 0; i < 40; i++) {
-    const confetti = document.createElement('div');
-    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    confetti.className = 'confetti-piece';
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.animationDelay = Math.random() * 2 + 's';
-    document.body.appendChild(confetti);
+    const confetti1 = document.createElement('div');
+    confetti1.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    confetti1.className = 'confetti-piece';
+    confetti1.style.left = Math.random() * 100 + 'vw';
+    confetti1.style.animationDelay = Math.random() * 2 + 's';
+    document.body.appendChild(confetti1);
 
     // Xóa emoji sau khi rơi xong để nhẹ máy
-    setTimeout(() => confetti.remove(), 5000);
+    setTimeout(() => confetti1.remove(), 5000);
   }
 };
 
