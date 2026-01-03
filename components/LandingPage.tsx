@@ -245,28 +245,33 @@ const handleRate = (stars: number) => {
     </div>
 
       {/* 2. MARQUEE */}
-       <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
-          <div className="overflow-hidden bg-blue-600 py-2 border-b border-blue-400">  
-        <div 
-          className="whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest inline-block"
-          style={{
+      {/* Container bao ngoài để căn giữa toàn bộ hệ thống nút */}
+<div className="flex flex-col items-center justify-center w-full px-4 gap-4 mt-6">
+  
+  {/* Thanh chạy chữ - Đã bo tròn và căn giữa */}
+  <div className="bg-indigo-700 py-1.5 rounded-full overflow-hidden shadow-lg border-b-4 border-indigo-900 w-full max-w-4xl relative">
+    <div className="overflow-hidden bg-blue-600/20 py-1.5 backdrop-blur-sm">  
+      <div  
+        className="whitespace-nowrap text-white font-bold uppercase text-[10px] tracking-widest inline-block"
+        style={{
           animation: 'marquee-simple 20s linear infinite',
           display: 'inline-block',
-          paddingLeft: '100%'    }} >
-    
-⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức! ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+          paddingLeft: '100%'
+        }} 
+      >
+        ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức! ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+      </div>
+    </div>
   </div>
 
-    <style>{`
+  {/* CSS cho hiệu ứng chữ chạy */}
+  <style>{`
     @keyframes marquee-simple {
       0% { transform: translate(0, 0); }
       100% { transform: translate(-100%, 0); }
     }
   `}</style>
-    </div>
-
-        </div>
-   
+</div>   
       {/* 3. MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
        {/* 4. CỘT TRÁI: TOP 10 */}
