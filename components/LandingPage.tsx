@@ -247,9 +247,27 @@ const handleRate = (stars: number) => {
       {/* 2. MARQUEE */}
      <div className="flex justify-center">
         <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
-          <div className="animate-marquee-slow whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest">
-            ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức!                 ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
-          </div>
+          <div className="overflow-hidden bg-blue-600 py-2 border-b border-blue-400">
+  <div 
+    className="whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest inline-block"
+    style={{
+      animation: 'marquee-simple 20s linear infinite',
+      display: 'inline-block',
+      paddingLeft: '100%'
+    }}
+  >
+    
+⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức!                 ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+  </div>
+
+  <style>{`
+    @keyframes marquee-simple {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-100%, 0); }
+    }
+  `}</style>
+</div>
+
         </div>
       </div>
       {/* 3. MAIN LAYOUT */}
