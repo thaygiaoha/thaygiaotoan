@@ -160,14 +160,13 @@ const handleRate = (stars: number) => {
     fireConfetti(); // Pháo hoa bằng emoji nổ tung!
     alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
   } else {
-    angryConfetti(); // Pháo hoa bằng emoji nổ tung!
-    alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
+   alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
   }
 
   // 3. Hiển thị trạng thái "Cảm ơn" trong Modal
   setHasRated(true);
 
-  // 4. Đóng modal sau 1.2 giây
+  // 4. Đóng modal sau 1.3 giây
   setTimeout(() => {
     setShowRateModal(false);
     setHasRated(false);
