@@ -134,6 +134,15 @@ const handleRate = (stars: number) => {
     setHasRated(false);
   }, 1200);
 };
+   const totalRatings = (Object.values(stats.ratings) as number[]).reduce((a, b) => a + b, 0);
+
+  return (
+    <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden px-2">
+      <style>{`
+        @keyframes marquee-slow { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee-slow { animation: marquee-slow 30s linear infinite; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+      `}</style>
   {/* 1. HEADER BUTTONS */}
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
       
