@@ -2,7 +2,7 @@
 import { Topic, ExamCodeDefinition, NewsItem, FixedConfig } from './types';
 
 export const GRADES = [9, 10, 11, 12];
-export const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbxmf9eSIVXDDCoMJYATTOyweo6nFlNVvYv9jE0Ws7yx5lI8YvVxMnh7B6Um0NeFPj5r/exec";
+export const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbzKUxIb-pmb5zFZBgS9b0oJC-iptzA9Lmh9w1H4pXoEING0lGTDpqngdLaZNQceHlUS/exec";
 export const DANHGIA_URL = "https://script.google.com/macros/s/AKfycbzKUxIb-pmb5zFZBgS9b0oJC-iptzA9Lmh9w1H4pXoEING0lGTDpqngdLaZNQceHlUS/exec";
 export const API_ROUTING: Record<string, string> = {
   "680988948882": DEFAULT_API_URL,
