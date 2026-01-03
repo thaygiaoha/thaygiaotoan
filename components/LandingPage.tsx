@@ -245,31 +245,28 @@ const handleRate = (stars: number) => {
     </div>
 
       {/* 2. MARQUEE */}
-     <div className="flex justify-center">
-        <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
-          <div className="overflow-hidden bg-blue-600 py-2 border-b border-blue-400">
-  <div 
-    className="whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest inline-block"
-    style={{
-      animation: 'marquee-simple 20s linear infinite',
-      display: 'inline-block',
-      paddingLeft: '100%'
-    }}
-  >
+       <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
+          <div className="overflow-hidden bg-blue-600 py-2 border-b border-blue-400">  
+        <div 
+          className="whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest inline-block"
+          style={{
+          animation: 'marquee-simple 20s linear infinite',
+          display: 'inline-block',
+          paddingLeft: '100%'    }} >
     
-⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức!                 ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức! ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
   </div>
 
-  <style>{`
+    <style>{`
     @keyframes marquee-simple {
       0% { transform: translate(0, 0); }
       100% { transform: translate(-100%, 0); }
     }
   `}</style>
-</div>
+    </div>
 
         </div>
-      </div>
+   
       {/* 3. MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
        {/* 4. CỘT TRÁI: TOP 10 */}
