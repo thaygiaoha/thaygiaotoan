@@ -65,19 +65,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     top10: []
   });
 
- const fetchStats = async () => {
-  const response = await fetch(`${DANGGIA_URL}?type=getStats`);
-  const result = await response.json();
-  if (result.status === "success") {
-    setStats({
-      ratings: result.data.ratings,
-      top10: result.data.top10
-    });
-  }
-   useEffect(() => {
-  fetchStats();
+ useEffect(() => {
+  setStats(prev => ({
+    ...prev,
+    top10: [
+      { name: "TEST A", score: 10, time: 60, idPhone: "098xxx1111" },
+      { name: "TEST B", score: 9, time: 80, idPhone: "098xxx2222" }
+    ]
+  }));
 }, []);
-};
 
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
