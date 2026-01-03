@@ -236,6 +236,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
               ))}
             </div>
           </div>
+           {/* NÚT Chọn môn học (DROPDOWN) */}
+          <div className="relative group w-full flex-1">
+            <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
+              <i className="fas fa-graduation-cap"></i><span>Chọn môn học <i className="fas fa-graduation-cap ml-1 text-[8px]"></i></span>
+            </button>
+            <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
+              {OTHER_APPS.map((app, idx) => (
+                <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
+                  <i className={`${app.icon} text-teal-600 w-5`}></i>
+                  <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
 
           <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
             <i className="fas fa-sign-in-alt text-lg"></i><span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
