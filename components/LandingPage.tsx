@@ -390,6 +390,59 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </div>
         </div>
       )}
+        {/* MODAL CHỌN MÔN HỌC VÀ CẤP HỌC */}
+{showSubjectModal && (
+  <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+    <div className="bg-white w-full max-w-2xl rounded-[2.5rem] p-6 md:p-8 shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+      <h3 className="text-xl font-black text-indigo-700 uppercase text-center mb-1">Chọn môn học và cấp học</h3>
+      <p className="text-[10px] text-slate-400 font-bold text-center uppercase mb-6 tracking-widest">Vui lòng chọn 1 môn và 1 cấp học để tiếp tục</p>
+      
+      <div className="grid grid-cols-2 gap-4 flex-grow overflow-hidden">
+        {/* CỘT 1: MÔN HỌC */}
+        <div className="flex flex-col h-full overflow-hidden">
+          <div className="bg-indigo-50 p-2 rounded-t-xl text-center font-black text-indigo-600 text-[11px] uppercase border-b-2 border-indigo-200">Môn học</div>
+          <div className="overflow-y-auto pr-2 space-y-1 mt-2 no-scrollbar">
+            {SUBJECTS.map(sub => (
+              <button key={sub} onClick={() => setSelectedSubject(sub)} className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all font-bold text-[11px] ${selectedSubject === sub ? 'bg-indigo-600 text-white border-indigo-800' : 'bg-slate-50 text-slate-600 border-transparent hover:border-indigo-100'}`}>
+                <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${selectedSubject === sub ? 'border-white bg-indigo-400' : 'border-slate-300 bg-white'}`}>
+                  {selectedSubject === sub && <i className="fas fa-check text-[8px]"></i>}
+                </div>
+                {sub}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* CỘT 2: CẤP HỌC */}
+        <div className="flex flex-col h-full overflow-hidden">
+          <div className="bg-orange-50 p-2 rounded-t-xl text-center font-black text-orange-600 text-[11px] uppercase border-b-2 border-orange-200">Cấp học</div>
+          <div className="overflow-y-auto pr-2 space-y-1 mt-2 no-scrollbar">
+            {LEVELS.map(lvl => (
+              <button key={lvl} onClick={() => setSelectedLevel(lvl)} className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all font-bold text-[11px] ${selectedLevel === lvl ? 'bg-orange-500 text-white border-orange-700' : 'bg-slate-50 text-slate-600 border-transparent hover:border-orange-100'}`}>
+                <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${selectedLevel === lvl ? 'border-white bg-orange-400' : 'border-slate-300 bg-white'}`}>
+                  {selectedLevel === lvl && <i className="fas fa-check text-[8px]"></i>}
+                </div>
+                {lvl}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* FOOTER MODAL */}
+      <div className="mt-8 flex gap-3">
+        <button onClick={() => {setShowSubjectModal(false); setSelectedSubject(""); setSelectedLevel("");}} className="flex-1 py-3 bg-slate-100 text-slate-500 rounded-2xl font-black uppercase text-xs">Hủy</button>
+        <button 
+          onClick={handleRedirect}
+          disabled={!selectedSubject || !selectedLevel}
+          className={`flex-2 px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-lg transition-all ${selectedSubject && selectedLevel ? 'bg-indigo-600 text-white hover:scale-105' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+        >
+          Tiếp tục <i className="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     </div>
   );
