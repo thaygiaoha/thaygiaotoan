@@ -72,20 +72,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     top10: []
   });
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const resp = await fetch(`${DANHGIA_URL}?type=getStats&t=${Date.now()}`);
-        const result = await resp.json();
-        if (result.status === "success") setStats(result.data);
-      } catch (e) { console.error(e); }
-    };
-    fetchStats();
-    const interval = setInterval(() => {
-      setCurrentImg(prev => (prev + 1) % IMAGES_CAROUSEL.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  const fetchStats = async () => {
+  try {
+    const response = await fetch(`${DANGGIA_URL}?type=getStats`);
+    const result = await response.json(); // Kết quả trả về có dạng { status, message, data: { ratings, top10 } }
+
+    if (result.status === "success") {
+      // Cập nhật stats (bao gồm cả ratings và top10)
+      setStats(prev => ({
+        ...prev,
+        ratings: result.data.ratings,
+        top10: result.data.top10 // Đảm bảo dòng này có để cập nhật danh sách
+      }));
+    }
+  } catch (error) {
+    console.error("Lỗi cập nhật dữ liệu:", error);
+  }
+};
+
   const [top10Data, setTop10Data] = useState([]);
 
   const fetchTop10 = async () => {
