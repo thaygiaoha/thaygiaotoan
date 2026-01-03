@@ -176,21 +176,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full px-2">
         
         {/* CỘT TRÁI: TOP 10 */}
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-md p-3 border border-slate-100 flex flex-col h-full">
-          <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
-          <div className="space-y-2 overflow-y-auto max-h-[420px] pr-1 no-scrollbar flex-grow">
-            {stats.top10?.length > 0 ? stats.top10.map((item, index) => (
-              <div key={index} className="flex justify-between items-center bg-slate-50 rounded-xl p-3 border border-slate-100">
-                <div className="flex flex-col min-w-0">
-                  <span className="font-black text-[11px] truncate text-slate-800">{index + 1}. {item.name} {rankIcon(index + 1)}</span>
-                  <span className="text-[9px] text-slate-400 font-bold">{formatPhoneHidden(item.phone || item.idPhone)}</span>
+         <div className="lg:col-span-3 flex flex-col">
+          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
+            <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
+               <i className="fas fa-crown text-yellow-300"></i> TOP 10 QUIZ TUẦN
+            </div>
+            <div className="p-2 space-y-1 flex-grow bg-slate-50 overflow-y-auto max-h-[420px] custom-scrollbar">
+              {stats.top10.length > 0 ? stats.top10.map((item) => (
+                <div key={item.rank} className="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.01]">
+                  <div className="flex flex-col gap-0.5 min-w-0 flex-1 pr-1">
+                    <span className="font-bold text-slate-800 text-[10px] truncate">{item.rank}. {item.name}</span>
+                    <span className="text-[9px] text-slate-400 font-bold">{formatPhoneHidden(item.phone)}</span>
+                  </div>
+                  <div className="text-right flex flex-col shrink-0">
+                    <span className="font-black text-blue-600 text-[10px] leading-none">{item.score.toFixed(1)} đ</span>
+                    <span className="text-[8px] text-slate-400 mt-0.5"><i className="far fa-clock mr-0.5"></i>{item.time}</span>
+                  </div>
                 </div>
-                <div className="text-right flex flex-col">
-                  <span className="font-black text-red-600 text-[11px]">{item.score || item.tongdiem} đ</span>
-                  <span className="text-[8px] text-slate-400 italic">{item.fulltime}</span>
-                </div>
-              </div>
-            )) : <div className="text-center text-slate-400 text-xs py-10 font-bold">ĐANG CẬP NHẬT...</div>}
+              )) : (
+                <div className="p-10 text-center text-slate-400 text-xs uppercase font-black">Đang cập nhật...</div>
+              )}
+            </div>
           </div>
         </div>
 
