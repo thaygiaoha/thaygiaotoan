@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
-import confetti from 'canvas-confetti'; // Nhớ import ở đầu file
+
 
 const ADMIN_CONFIG = {
   quizPassword: "66668888",
