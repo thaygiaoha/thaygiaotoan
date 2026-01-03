@@ -1,18 +1,11 @@
-
 const SPREADSHEET_ID = "16w4EzHhTyS1CnTfJOWE7QQNM0o2mMQIqePpPK8TEYrg";
 
-/**
- * Hàm xóa dữ liệu Quiz vào 23:59 Chủ Nhật hàng tuần.
- * Hướng dẫn: Trong Apps Script, chọn biểu tượng Đồng hồ (Trình kích hoạt) -> Thêm trình kích hoạt.
- * Chọn hàm: clearWeeklyQuizData | Sự kiện: Theo thời gian | Loại: Theo tuần | Ngày: Chủ nhật | Giờ: 23h-00h.
- */
 function clearWeeklyQuizData() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const sheet = ss.getSheetByName("ketquaQuiZ");
   if (sheet && sheet.getLastRow() > 1) {
-    // Xóa từ dòng 2 đến hết
     sheet.deleteRows(2, sheet.getLastRow() - 1);
-    console.log("Dữ liệu ketquaQuiZ đã được dọn dẹp định kỳ.");
+    console.log("Dữ liệu ketquaQuiZ đã được dọn dẹp.");
   }
 }
 
@@ -20,12 +13,14 @@ function doGet(e) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const type = e.parameter.type;
 
+  // --- TRƯỜNG HỢP 1: LẤY THỐNG KÊ (RATINGS & TOP 10) ---
   if (type === 'getStats') {
     const stats = {
       ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
       top10: []
     };
 
+    // 1. Lấy dữ liệu đánh giá sao
     const sheetRate = ss.getSheetByName("danhgia");
     if (sheetRate) {
       const rateData = sheetRate.getDataRange().getValues();
@@ -35,36 +30,31 @@ function doGet(e) {
       }
     }
 
-    const sheetQuiz = ss.getSheetByName("ketquaQuiZ");
-    if (sheetQuiz) {
-      const quizData = sheetQuiz.getDataRange().getValues();
-      if (quizData.length > 1) {
-        const results = [];
-        for (let i = 1; i < quizData.length; i++) {
-          results.push({
-            name: quizData[i][2],
-            score: parseFloat(quizData[i][6]) || 0,
-            time: quizData[i][7] || "00:00",
-            phone: quizData[i][5] ? quizData[i][5].toString() : ""
-          });
-        }
-        results.sort((a, b) => {
-          if (b.score !== a.score) return b.score - a.score;
-          return a.time.localeCompare(b.time);
-        });
-        stats.top10 = results.slice(0, 10).map((r, idx) => ({
-          rank: idx + 1,
-          ...r
+    // 2. Lấy dữ liệu Top 10 từ sheet Top10Display (Ưu tiên hiển thị)
+    const sheetDisplay = ss.getSheetByName("Top10Display");
+    if (sheetDisplay) {
+      const lastRow = sheetDisplay.getLastRow();
+      if (lastRow >= 2) {
+        const values = sheetDisplay.getRange(2, 1, Math.min(10, lastRow - 1), 7).getValues();
+        stats.top10 = values.map((row, index) => ({
+          rank: index + 1,
+          name: row[0],      // Cột A
+          score: row[2],     // Cột C
+          time: row[3],      // Cột D
+          idPhone: row[6] || row[1] // Cột G (idPhone) hoặc cột B
         }));
       }
     }
+
     return createResponse("success", "Thành công", stats);
   }
 
+  // --- TRƯỜNG HỢP 2: XÁC MINH HỌC SINH ---
   const idnumber = e.parameter.idnumber;
   const sbd = e.parameter.sbd;
   const sheetList = ss.getSheetByName("danhsach");
   
+  // SỬA LỖI TẠI ĐÂY: Nếu KHÔNG có sheet thì mới báo lỗi
   if (!sheetList) return createResponse("error", "Không tìm thấy sheet danhsach");
 
   const data = sheetList.getDataRange().getValues();
@@ -76,7 +66,7 @@ function doGet(e) {
   const idxClass = headers.indexOf("class");
   const idxLimit = headers.indexOf("limit");
   const idxLimittab = headers.indexOf("limittab");
-  const idxTk = headers.indexOf("taikhoanapp"); // Cột G
+  const idxTk = headers.indexOf("taikhoanapp");
 
   let student = null;
   for (let i = 1; i < data.length; i++) {
@@ -123,35 +113,27 @@ function doPost(e) {
         sheetQuiz.appendRow(["Timestamp", "maQuiZ", "name", "class", "school", "phoneNumber", "tongdiem", "fulltime", "sotk", "bank"]);
       }
       sheetQuiz.appendRow([
-        data.timestamp,
-        data.examCode,
-        data.name,
-        data.className,
+        new Date(),
+        data.examCode || "QUIZ",
+        data.name || "N/A",
+        data.className || "",
         data.school || "",
         data.phoneNumber || "",
-        data.score,
-        data.totalTime,
+        data.score || 0,
+        data.totalTime || "00:00",
         data.stk || "",
         data.bank || ""
       ]);
-      return createResponse("success", "OK");
+      return createResponse("success", "Đã lưu kết quả Quiz");
     }
 
+    // Mặc định lưu kết quả kiểm tra
     let sheetResult = ss.getSheetByName("ketqua");
     if (!sheetResult) sheetResult = ss.insertSheet("ketqua");
     if (sheetResult.getLastRow() === 0) {
       sheetResult.appendRow(["Timestamp", "makiemtra", "sbd", "name", "class", "tongdiem", "fulltime", "details"]);
     }
-    sheetResult.appendRow([
-      data.timestamp,
-      data.examCode,
-      data.sbd,
-      data.name,
-      data.className,
-      data.score,
-      data.totalTime,
-      JSON.stringify(data.details)
-    ]);
+    sheetResult.appendRow([new Date(), data.examCode, data.sbd, data.name, data.className, data.score, data.totalTime, JSON.stringify(data.details)]);
 
     return createResponse("success", "OK");
   } catch (error) {
