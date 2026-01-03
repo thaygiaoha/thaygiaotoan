@@ -259,63 +259,51 @@ const handleRate = (stars: number) => {
   <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
     {/* Header giữ nguyên phong cách của bạn */}
     <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
-      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN <br/> (Chụp nhanh: 12:00 chủ nhật)
+      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN
     </div>
 
     {/* Nội dung danh sách được nâng cấp */}
     <div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
       {top10Data.length > 0 ? top10Data.map((item, index) => {
-        // Xác định Icon Cúp và màu sắc dựa trên thứ hạng (index)
-        let rankIcon = "fas fa-medal text-slate-300"; 
-        let nameColor = "text-slate-700";
-        let bgColor = "bg-white";
+  // Logic chọn Icon Cup
+  let cupIcon = "fas fa-award text-slate-300"; // Mặc định
+  if (index === 0) cupIcon = "fas fa-trophy text-yellow-400 animate-bounce"; // Vàng
+  if (index === 1) cupIcon = "fas fa-trophy text-slate-400"; // Bạc
+  if (index === 2) cupIcon = "fas fa-trophy text-orange-400"; // Đồng
 
-        if (index === 0) {
-          rankIcon = "fas fa-trophy text-yellow-400 animate-bounce";
-          nameColor = "text-yellow-700 font-black";
-          bgColor = "bg-yellow-50/50 border-yellow-100";
-        } else if (index === 1) {
-          rankIcon = "fas fa-trophy text-slate-400";
-          nameColor = "text-slate-800 font-bold";
-          bgColor = "bg-slate-50";
-        } else if (index === 2) {
-          rankIcon = "fas fa-trophy text-orange-400";
-          nameColor = "text-slate-800 font-bold";
-        }
+  return (
+    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+      {/* Cột 1: Cup */}
+      <div className="w-8 flex justify-center shrink-0">
+        <i className={`${cupIcon} text-xl`}></i>
+      </div>
 
-        return (
-          <div key={index} className={`flex items-center gap-2 p-3 rounded-2xl border border-slate-100 shadow-sm transition-transform hover:scale-[1.02] ${bgColor}`}>
-            {/* Cột Cúp/Thứ hạng */}
-            <div className="w-8 flex justify-center shrink-0">
-              <i className={`${rankIcon} text-base`}></i>
-            </div>
-
-            {/* Cột Thông tin: Tên đầy đủ & SĐT bên dưới */}
-            <div className="flex-1 min-w-0">
-              <div className={`text-[10px] uppercase truncate ${nameColor}`}>
-                {index + 1}. {item.name}
-              </div>
-              <div className="text-[9px] text-slate-400 font-bold italic">
-                {item.idNumber} {/* Hiện SĐT của bạn ấy */}
-              </div>
-            </div>
-
-            {/* Cột Điểm & Thời gian bên dưới */}
-            <div className="text-right shrink-0">
-              <div className="text-[11px] font-black text-blue-600 leading-none">
-                {item.score} <span className="text-[8px]">đ</span>
-              </div>
-              <div className="text-[8px] text-slate-400 mt-0.5 font-bold">
-                <i className="far fa-clock mr-0.5"></i>{item.time}s
-              </div>
-            </div>
-          </div>
-        );
-      }) : (
-        <div className="p-10 text-center text-slate-400 text-[10px] uppercase font-black tracking-widest">
-          🚀 Đang tải bảng vàng...
+      {/* Cột 2: Thông tin người học (2 dòng) */}
+      <div className="flex-1 min-w-0">
+        <div className="text-[11px] font-black text-slate-800 uppercase truncate">
+          {item.name}
         </div>
-      )}
+        <div className="text-[9px] text-slate-400 font-bold tracking-wider">
+          <i className="fas fa-shield-alt mr-1"></i>{item.idPhone}
+        </div>
+      </div>
+
+      {/* Cột 3: Kết quả (2 dòng) */}
+      <div className="text-right shrink-0">
+        <div className="text-[12px] font-black text-indigo-600">
+          {item.score} <span className="text-[8px]">đ</span>
+        </div>
+        <div className="text-[9px] text-slate-400 font-bold italic">
+          <i className="far fa-clock mr-1"></i>{item.time}s
+        </div>
+      </div>
+    </div>
+  );
+}) : (
+  <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
+    🚀 Đang kết nối bảng vàng...
+  </div>
+)}
     </div>
   </div>
 </div>
