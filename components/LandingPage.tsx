@@ -16,13 +16,6 @@ const OTHER_APPS = [
   { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
 ];
 
-const rankIcon = (rank: number) => {
-  if (rank === 1) return "🥇";
-  if (rank === 2) return "🥈";
-  if (rank === 3) return "🥉";
-  return "";
-};
-
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
   return phone.slice(0, 2) + "xxx" + phone.slice(-4);
@@ -72,40 +65,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     top10: []
   });
 
-  const fetchStats = async () => {
-  try {
-    const response = await fetch(`${DANGGIA_URL}?type=getStats`);
-    const result = await response.json(); // Kết quả trả về có dạng { status, message, data: { ratings, top10 } }
-
-    if (result.status === "success") {
-      // Cập nhật stats (bao gồm cả ratings và top10)
-      setStats(prev => ({
-        ...prev,
-        ratings: result.data.ratings,
-        top10: result.data.top10 // Đảm bảo dòng này có để cập nhật danh sách
-      }));
-    }
-  } catch (error) {
-    console.error("Lỗi cập nhật dữ liệu:", error);
+ const fetchStats = async () => {
+  const response = await fetch(`${DANGGIA_URL}?type=getStats`);
+  const result = await response.json();
+  if (result.status === "success") {
+    setStats({
+      ratings: result.data.ratings,
+      top10: result.data.top10
+    });
   }
 };
-
-  const [top10Data, setTop10Data] = useState([]);
-
-  const fetchTop10 = async () => {
-  try {
-    const response = await fetch('YOUR_SCRIPT_URL?sheet=Top10');
-    const data = await response.json();
-    setTop10Data(data.slice(0, 10)); // Chỉ lấy đúng 10 người đầu tiên
-  } catch (error) {
-    console.error("Lỗi lấy Top 10:", error);
-  }
-};
-
 useEffect(() => {
-  fetchTop10();
+  fetchStats();
 }, []);
-
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
     if (quizMode === 'gift' && inputPassword !== ADMIN_CONFIG.quizPassword) return alert("Mật khẩu Quà QuiZ không chính xác!");
@@ -286,51 +258,52 @@ const handleRate = (stars: number) => {
       <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN
     </div>
 
-    {/* Nội dung danh sách được nâng cấp */}
+    {/* Nội dung danh sách TOP10 */}
     <div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
-      {top10Data.length > 0 ? top10Data.map((item, index) => {
-  // Logic chọn Icon Cup
-  let cupIcon = "fas fa-award text-slate-300"; // Mặc định
-  if (index === 0) cupIcon = "fas fa-trophy text-yellow-400 animate-bounce"; // Vàng
-  if (index === 1) cupIcon = "fas fa-trophy text-slate-400"; // Bạc
-  if (index === 2) cupIcon = "fas fa-trophy text-orange-400"; // Đồng
+  {stats.top10.length > 0 ? (
+    stats.top10.map((item, index) => {
+      const cup =
+        index === 0 ? "🥇" :
+        index === 1 ? "🥈" :
+        index === 2 ? "🥉" : "🏅";
 
-  return (
-    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
-      {/* Cột 1: Cup */}
-      <div className="w-8 flex justify-center shrink-0">
-        <i className={`${cupIcon} text-xl`}></i>
-      </div>
+      return (
+        <div
+          key={index}
+          className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm"
+        >
+          {/* Cup */}
+          <div className="w-8 text-xl text-center">{cup}</div>
 
-      {/* Cột 2: Thông tin người học (2 dòng) */}
-      <div className="flex-1 min-w-0">
-        <div className="text-[11px] font-black text-slate-800 uppercase truncate">
-          {item.name}
-        </div>
-        <div className="text-[9px] text-slate-400 font-bold tracking-wider">
-          <i className="fas fa-shield-alt mr-1"></i>{item.idPhone}
-        </div>
-      </div>
+          {/* Name + Phone */}
+          <div className="flex-1 min-w-0">
+            <div className="text-[11px] font-black text-slate-800 uppercase truncate">
+              {item.name}
+            </div>
+            <div className="text-[9px] text-slate-400 font-bold tracking-wider">
+              {item.idPhone}
+            </div>
+          </div>
 
-      {/* Cột 3: Kết quả (2 dòng) */}
-      <div className="text-right shrink-0">
-        <div className="text-[12px] font-black text-indigo-600">
-          {item.score} <span className="text-[8px]">đ</span>
+          {/* Score + Time */}
+          <div className="text-right shrink-0">
+            <div className="text-[12px] font-black text-indigo-600">
+              {item.score} <span className="text-[8px]">đ</span>
+            </div>
+            <div className="text-[9px] text-slate-400 font-bold italic">
+              {item.time}s
+            </div>
+          </div>
         </div>
-        <div className="text-[9px] text-slate-400 font-bold italic">
-          <i className="far fa-clock mr-1"></i>{item.time}s
-        </div>
-      </div>
+      );
+    })
+  ) : (
+    <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
+      🚀 Đang tải bảng vàng...
     </div>
-  );
-}) : (
-  <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
-    🚀 Đang kết nối bảng vàng...
-  </div>
-)}
-    </div>
-  </div>
+  )}
 </div>
+
 
         {/* 5.CAROUSEL */}
         <div className="lg:col-span-7">
