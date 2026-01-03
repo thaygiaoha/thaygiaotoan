@@ -281,7 +281,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         </div>
         <div className="text-slate-400 space-y-1">
             <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">© 2025 KÊNH HỌC TOÁN TRỰC TUYẾN CHUYÊN NGHIỆP</p>
-            <p className="text-[9px] font-bold opacity-60 uppercase tracking-tighter">Admin: Nguyễn Văn Hà - THPT Yên Dũng số 2</p>
+            <p className="text-[9px] font-bold opacity-60 uppercase tracking-tighter">Phát triển bởi nhóm giáo viên Toán. Admin: Nguyễn Văn Hà </p>
         </div>
       </footer>
       {/* MODAL QUIZ (Sửa lỗi step-by-step) */}
