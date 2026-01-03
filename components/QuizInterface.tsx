@@ -52,16 +52,16 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ config, student, question
     onFinish({ 
     type: isQuizMode ? 'quiz' : 'exam',
     timestamp: new Date().toISOString(), 
-    examCode: config.id, 
-    sbd: student.sbd, 
+    examCode: "'" & config.id, 
+    sbd: "'" & student.sbd, 
     name: student.name, 
     className: student.class,
     school: student.school,
-    phoneNumber: student.phoneNumber,   
+    phoneNumber: "'" & student.phoneNumber,   
     score, 
     totalTime: elapsedSeconds, // timeDisplay
        // THÊM 2 DÒNG NÀY VÀO ĐÂY:
-    stk: student.stk || "",
+    stk: "'" & student.stk || "",
     bank: student.bank || "",
     // -----------------------
     tabSwitches,
