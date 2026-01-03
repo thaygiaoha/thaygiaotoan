@@ -59,7 +59,7 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ config, student, question
     school: student.school,
     phoneNumber: student.phoneNumber,   
     score, 
-    totalTime: timeDisplay, 
+    totalTime: elapsedSeconds, // timeDisplay
        // THÊM 2 DÒNG NÀY VÀO ĐÂY:
     stk: student.stk || "",
     bank: student.bank || "",
