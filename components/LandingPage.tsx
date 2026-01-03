@@ -7,7 +7,6 @@ const ADMIN_CONFIG = {
   schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 1", "THPT Lạng Giang số 1", "Khác"],
   banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"]
 };
- const BTN_CLASS = "w-full h-[72px] flex flex-col items-center justify-center gap-1 rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 p-2";
 
 const OTHER_APPS = [
   { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
@@ -23,7 +22,6 @@ const rankIcon = (rank: number) => {
   return "";
 };
 
-
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
   return phone.slice(0, 2) + "xxx" + phone.slice(-4);
@@ -38,6 +36,13 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, user, onOpenAuth, onOpenVip }) => {
+  const SUBJECTS = ["Toán học", "Vật lí", "Hóa học", "Sinh học", "Văn học", "Lịch sử", "Địa lí", "Tin học", "Tiếng Anh", "GDKT&PL", "CNCN", "CNNN", "Khác"];
+  const LEVELS = ["THPT", "THCS", "Tiểu học", "Đại học", "Cao học", "Trên cao học"];
+
+  const REDIRECT_LINKS: Record<string, string> = {
+  "Toán học-THPT": "https://www.facebook.com/hoctoanthayha.bg",
+  "Vật lí-THCS": "https://twitter.com/Math_teacher_Ha",
+  "default": "https://www.facebook.com/hoctoanthayha.bg"};
   const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
   const [inputPassword, setInputPassword] = useState('');
   const [isOtherSchool, setIsOtherSchool] = useState(false);
@@ -202,7 +207,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
           </div>
         </div>
 
-        {/* CỘT GIỮA: CAROUSEL */}
+        {/* 2 CỘT GIỮA: CAROUSEL */}
         <div className="lg:col-span-7">
           <div className="relative h-64 md:h-full min-h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
             {IMAGES_CAROUSEL.map((img, idx) => (
@@ -213,41 +218,47 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
             </div>
           </div>
         </div>
-       {/* CỘT PHẢI: ACTIONS */}
-        <button
-            onClick={() => window.open("https://new-chat-bot-two.vercel.app/", "_blank")} className={`${BTN_CLASS} bg-indigo-600 text-white border-indigo-900`}>
-            <i className="fas fa-headset text-2xl"></i><span>Trợ lý học tập</span>
-        </button>
+       {/* 3CỘT PHẢI: ACTIONS */}
+<div className="lg:col-span-2 flex flex-col gap-3">
+  <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+    <i className="fas fa-headset text-lg"></i><span>Trợ lý học tập</span>
+  </button>
 
+  <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+    <i className="fas fa-users text-lg"></i><span>Đăng ký học Toán</span>
+  </button>
 
-          <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-users text-lg"></i><span>Đăng ký học Toán</span>
-          </button>
+  {/* NÚT ỨNG DỤNG KHÁC (GIỮ NGUYÊN DROPDOWN) */}
+  <div className="relative group w-full flex-1">
+    <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
+      <i className="fas fa-th text-lg"></i><span>Ứng dụng khác <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
+    </button>
+    <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
+      {OTHER_APPS.map((app, idx) => (
+        <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
+          <i className={`${app.icon} text-teal-600 w-5`}></i>
+          <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  {/* NÚT CHỌN MÔN HỌC - BÂY GIỜ MỞ MODAL */}
+  <button 
+    onClick={() => setShowSubjectModal(true)} 
+    className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-purple-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-purple-800 p-2"
+  >
+    <i className="fas fa-graduation-cap text-lg"></i><span>Chọn môn học</span>
+  </button>
 
-          {/* NÚT ỨNG DỤNG KHÁC (DROPDOWN) */}
-          <div className="relative group w-full flex-1">
-            <button className="w-full h-full flex flex-col items-center justify-center gap-1 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-teal-800 p-2">
-              <i className="fas fa-th text-2xl"></i><span>Ứng dụng khác <i className="fas fa-chevron-up ml-1 text-[8px]"></i></span>
-            </button>
-            <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 hidden group-hover:block z-[100] p-2 animate-bounce-short">
-              {OTHER_APPS.map((app, idx) => (
-                <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors">
-                  <i className={`${app.icon} text-teal-600 w-5`}></i>
-                  <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
+  <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
+    <i className="fas fa-sign-in-alt text-lg"></i><span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
+  </button>
 
-          <button onClick={onOpenAuth} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-sign-in-alt text-lg"></i><span>{user ? `SĐT: ${user.phoneNumber}` : "Đăng Nhập"}</span>
-          </button>
+  <button onClick={onOpenVip} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-orange-700 p-2">
+    <i className="fas fa-gem text-lg"></i><span>Nâng Cấp VIP</span>
+  </button>
+</div>
 
-          <button onClick={onOpenVip} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-orange-700 p-2">
-            <i className="fas fa-gem text-lg"></i><span>Nâng Cấp VIP</span>
-          </button>
-        </div>
-      </div>
 
       {/* 4. NEWS SECTION */}
       <div className="bg-white p-6 rounded-[2.5rem] shadow-xl border border-slate-100 border-b-8 border-slate-200 max-w-7xl mx-auto w-full mt-4">
