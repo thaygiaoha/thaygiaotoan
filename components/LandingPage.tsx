@@ -14,7 +14,8 @@ const OTHER_APPS = [
   { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
   { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
 ];
-
+const BTN_CLASS =
+  "w-full h-[72px] flex flex-col items-center justify-center gap-1 rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 p-2";
 const rankIcon = (rank: number) => {
   if (rank === 1) return "🥇";
   if (rank === 2) return "🥈";
@@ -213,9 +214,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
         </div>
 
         {/* CỘT PHẢI: ACTIONS */}
-        <div className="lg:col-span-2 flex flex-col gap-3">
-          <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-headset text-lg"></i><span>Trợ lý học tập</span>
+        <button
+          onClick={() => window.open("https://new-chat-bot-two.vercel.app/", "_blank")}
+            className={`${BTN_CLASS} bg-indigo-600 text-white border-indigo-900`}>           
+          <i className="fas fa-headset text-2xl"></i>
+          <span>Trợ lý học tập</span>
           </button>
 
           <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 flex flex-col items-center justify-center gap-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-md border-b-4 border-indigo-900 p-2">
