@@ -121,6 +121,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     setTimeout(() => confetti.remove(), 5000);
   }
 };
+  // *TOP10chuan
+  useEffect(() => {
+  const fetchTop10 = async () => {
+    try {
+      const res = await fetch(`${DANHGIA_URL}?type=top10`);
+      const data = await res.json();
+
+      // data = [{ name, idPhone, tongdiem, fulltime, ... }]
+      setStats(prev => ({
+        ...prev,
+        top10: Array.isArray(data) ? data : []
+      }));
+    } catch (error) {
+      console.error("Lỗi load TOP10:", error);
+    }
+  };
+
+  fetchTop10();
+}, []);
+
 
 const handleRate = (stars: number) => {
   // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
@@ -262,23 +282,23 @@ const handleRate = (stars: number) => {
           <div className="w-8 text-xl text-center">{cup}</div>
 
           {/* Name + Phone */}
-          <div className="flex-1 min-w-0">
-            <div className="text-[11px] font-black text-slate-800 uppercase truncate">
-              {item.name}
-            </div>
-            <div className="text-[9px] text-slate-400 font-bold tracking-wider">
-              {item.idPhone}
-            </div>
-          </div>
+         <div className="text-[11px] font-black text-slate-800 uppercase truncate">
+  {item.name}
+</div>
+<div className="text-[9px] text-slate-400 font-bold tracking-wider">
+  {item.idPhone}
+</div>
+
 
           {/* Score + Time */}
           <div className="text-right shrink-0">
-            <div className="text-[12px] font-black text-indigo-600">
-              {item.score} <span className="text-[8px]">đ</span>
-            </div>
-            <div className="text-[9px] text-slate-400 font-bold italic">
-              {item.time}s
-            </div>
+            <div className="text-[12px] font-black text-red-600">
+  {item.tongdiem} <span className="text-[8px]">đ</span>
+</div>
+<div className="text-[9px] text-slate-400 font-bold italic">
+  {item.fulltime}s
+</div>
+
           </div>
         </div>
       );
