@@ -122,7 +122,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     setTimeout(() => confetti.remove(), 5000);
   }
 };
-  const angryConfetti1 = () => {
+  const angryConfetti = () => {
   const emojis = [
     '😡', // mặt giận dữ
     '😠', // không hài lòng
@@ -133,15 +133,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   ];
 
   for (let i = 0; i < 40; i++) {
-    const confetti1 = document.createElement('div');
-    confetti1.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-    confetti1.className = 'confetti-piece';
-    confetti1.style.left = Math.random() * 100 + 'vw';
-    confetti1.style.animationDelay = Math.random() * 2 + 's';
+    const confetti = document.createElement('div');
+    confetti.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.animationDelay = Math.random() * 2 + 's';
     document.body.appendChild(confetti1);
 
     // Xóa emoji sau khi rơi xong để nhẹ máy
-    setTimeout(() => confetti1.remove(), 5000);
+    setTimeout(() => confetti.remove(), 5000);
   }
 };
 
@@ -160,7 +160,7 @@ const handleRate = (stars: number) => {
     fireConfetti(); // Pháo hoa bằng emoji nổ tung!
     alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
   } else {
-    fireConfetti1(); // Pháo hoa bằng emoji nổ tung!
+    angryConfetti(); // Pháo hoa bằng emoji nổ tung!
     alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
   }
 
