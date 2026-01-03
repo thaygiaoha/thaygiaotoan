@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
+import confetti from 'canvas-confetti'; // Nhớ import ở đầu file
 
 const ADMIN_CONFIG = {
   quizPassword: "66668888",
@@ -108,7 +109,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     setShowSubjectModal(false);
   };
 const handleRate = (stars: number) => {
-  // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
+  // 1. Cập nhật số liệu ảo ngay trên giao diện
   setStats(prev => ({
     ...prev,
     ratings: {
@@ -117,21 +118,34 @@ const handleRate = (stars: number) => {
     }
   }));
 
-  // 2. Thông báo kiểu "gắt" hoặc "vui vẻ" như bản cũ của bạn
+  // 2. Nếu đánh giá 4 hoặc 5 sao thì bắn pháo hoa
   if (stars >= 4) {
+    // Hiệu ứng pháo hoa bắn từ 2 bên
+    const duration = 3 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
+
+    const interval: any = setInterval(function() {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) return clearInterval(interval);
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+    }, 250);
+
     alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
   } else {
-    alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
+    alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Lần sau nhớ cho 5 sao nghe chưa!`);
   }
 
-  // 3. Hiển thị trạng thái "Cảm ơn" trong Modal
+  // 3. Hiển thị trạng thái "Cảm ơn"
   setHasRated(true);
 
-  // 4. Đóng modal sau 1.2 giây
+  // 4. Đóng modal
   setTimeout(() => {
     setShowRateModal(false);
     setHasRated(false);
-  }, 1200);
+  }, 1500);
 };
       {/* 1. HEADER BUTTONS */}
     <div className="flex flex-col gap-6 pb-12 font-sans overflow-x-hidden">
