@@ -46,6 +46,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   };
 
   // 2. Các State quản lý
+  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+  const [hasRated, setHasRated] = useState(false);
   const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
   const [inputPassword, setInputPassword] = useState('');
   const [isOtherSchool, setIsOtherSchool] = useState(false);
@@ -105,38 +107,50 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     window.open(link, '_blank');
     setShowSubjectModal(false);
   };
+const handleRate = async (stars: number) => {
+  if (isSubmittingRate) return;
+  setIsSubmittingRate(true);
 
-  const handleRateSubmit = async () => {
-    if (isSubmittingRate) return;
-    setIsSubmittingRate(true);
-    try {
-      const payload = {
-        type: 'rating',
-        stars: rating,
-        comment: comment,
-        name: user?.name || quizInfo.name || "Khách",
-        class: quizInfo.class || "Tự do",
-        idNumber: user?.phoneNumber || "GUEST",
-        taikhoanapp: user?.isVip ? "VIP" : "FREE"
-      };
-      await fetch(DANHGIA_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
-      });
-       if (rating >= 4) {
-        alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${rating} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
-      } else {
-        // Dưới 4 sao (1, 2, 3 sao)
-        alert(`😡 Này! Sao đánh giá có ${rating} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
-      }
-      setShowRateModal(false);
-    } catch (e) {
-      alert("Gửi đánh giá thất bại!");
-    } finally {
-      setIsSubmittingRate(false);
+  try {
+    const payload = {
+      type: 'rating',
+      stars: stars,
+      comment: "Đánh giá nhanh từ Landing",
+      name: user?.name || "Khách",
+      idNumber: user?.phoneNumber || "GUEST",
+      taikhoanapp: user?.isVip ? "VIP" : "FREE"
+    };
+
+    // 1. Gửi dữ liệu đi
+    await fetch(DANHGIA_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(payload)
+    });
+
+    // 2. Phản hồi bằng alert (if...else bản cũ của bạn)
+    if (stars >= 4) {
+      alert(`❤️ Tuyệt vời! Cảm ơn bạn đã đánh giá ${stars} ⭐. Chúc bạn học tập thật tốt nhé! ❤️`);
+    } else {
+      alert(`😡 Này! Sao đánh giá có ${stars} ⭐ thôi? Học thì lười mà đánh giá thì khắt khe thế 😡! Thích ăn 👊 à. ❤️ Lần sau nhớ cho 5 sao nghe chưa!`);
     }
-  };
+
+    // 3. Hiển thị trạng thái thành công trong Modal
+    setHasRated(true);
+
+    // 4. Đóng modal
+    setTimeout(() => {
+      setShowRateModal(false);
+      setHasRated(false);
+      setIsSubmittingRate(false);
+    }, 1200);
+
+  } catch (e) {
+    alert("Gửi đánh giá thất bại!");
+    setIsSubmittingRate(false);
+  }
+};
+  
   const totalRatings = (Object.values(stats.ratings) as number[]).reduce((a, b) => a + b, 0);
 
   return (
@@ -309,60 +323,80 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       {/* CÁC MODAL KHÁC (QUIZ, RATING...) */}
       {/* (Lược bớt phần hiển thị để tiết kiệm không gian, bạn có thể thêm lại y hệt bản cũ) */}
         {/* MODAL ĐÁNH GIÁ (Giữ nguyên của bạn) */}
-       {showRateModal && (
-  <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-lg">
-    {/* Thay đổi quan trọng: w-full max-w-md để bảng không bị tràn */}
-    <div className="bg-white w-full max-w-md rounded-[3rem] p-8 shadow-2xl border border-slate-100 text-center space-y-6 animate-fade-in">
-      <h3 className="text-xl font-black text-slate-800 uppercase tracking-tight">Đánh giá Web</h3>
+      {showRateModal && (
+  <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+    <div className="bg-white w-full max-w-md rounded-[2.5rem] relative overflow-hidden shadow-2xl border border-slate-100 animate-fade-in">
       
-      <div className="bg-slate-50 p-4 rounded-2xl space-y-2 text-left">
-        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 text-center">
-          Tổng: {totalRatings} lượt đánh giá
-        </p>
-        {[5, 4, 3, 2, 1].map(star => {
-          const count = stats.ratings[star] || 0;
-          const percent = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
-          return (
-            <div key={star} className="flex items-center gap-2">
-              <span className="text-[10px] font-bold w-4 text-slate-600">{star}★</span>
-              <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-yellow-400" style={{ width: `${percent}%` }}></div>
-              </div>
-              <span className="text-[9px] font-bold text-slate-400 w-6 text-right">{count}</span>
+      {/* Nút đóng */}
+      <button onClick={() => setShowRateModal(false)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors">
+        <i className="fas fa-times text-xl"></i>
+      </button>
+
+      <div className="p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-black text-slate-800 mb-2 uppercase tracking-tight">Đánh giá Web</h2>
+          <div className="flex items-center justify-center gap-2 text-yellow-500 mb-1">
+            <i className="fas fa-star text-2xl"></i>
+            {/* Tính trung bình sao từ dữ liệu stats của bạn */}
+            <span className="text-4xl font-black text-slate-800">
+              {totalRatings > 0 
+                ? (Object.entries(stats.ratings).reduce((acc, [star, count]) => acc + (Number(star) * Number(count)), 0) / totalRatings).toFixed(1) 
+                : "5.0"}
+            </span>
+          </div>
+          <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+            <i className="fas fa-users"></i> Dựa trên {totalRatings} lượt đánh giá
+          </p>
+        </div>
+
+        {!hasRated ? (
+          <>
+            {/* Dãy sao để chọn */}
+            <div className="flex justify-center gap-2 mb-8">
+              {[1, 2, 3, 4, 5].map(star => (
+                <button
+                  key={star}
+                  onMouseEnter={() => setHoveredStar(star)}
+                  onMouseLeave={() => setHoveredStar(null)}
+                  onClick={() => handleRate(star)}
+                  className="transition-transform active:scale-90 focus:outline-none"
+                >
+                  <i className={`fa-star text-4xl transition-all ${
+                    (hoveredStar !== null ? star <= hoveredStar : false) 
+                    ? "fas text-yellow-400 scale-110" 
+                    : "far text-slate-200"
+                  }`}></i>
+                </button>
+              ))}
             </div>
-          );
-        })}
-      </div>
 
-      <div className="flex justify-center gap-3">
-        {[1, 2, 3, 4, 5].map(star => (
-          <button key={star} onClick={() => setRating(star)} className="text-4xl transition-transform hover:scale-125 focus:outline-none">
-            {star <= rating ? <span className="text-yellow-400">★</span> : <span className="text-slate-200">★</span>}
-          </button>
-        ))}
-      </div>
-
-      <textarea 
-        className="w-full p-4 bg-slate-50 rounded-2xl border-none font-bold text-sm outline-none h-24 resize-none" 
-        placeholder="Nhập nhận xét..." 
-        value={comment} 
-        onChange={e => setComment(e.target.value)}
-      ></textarea>
-
-      <div className="flex gap-3">
-        <button 
-          onClick={() => setShowRateModal(false)} 
-          className="flex-1 py-3 bg-slate-100 text-slate-500 rounded-xl font-black uppercase text-xs"
-        >
-          Đóng
-        </button>
-        <button 
-          onClick={handleRateSubmit} 
-          disabled={isSubmittingRate} 
-          className="flex-[2] px-8 py-3 bg-indigo-600 text-white rounded-xl font-black uppercase text-xs shadow-lg"
-        >
-          {isSubmittingRate ? "Đang gửi..." : "Gửi đánh giá"}
-        </button>
+            {/* Bảng tiến trình (Progress bars) */}
+            <div className="space-y-3">
+              {[5, 4, 3, 2, 1].map(star => {
+                const count = stats.ratings[star] || 0;
+                const percentage = totalRatings > 0 ? (count / totalRatings) * 100 : 0;
+                return (
+                  <div key={star} className="flex items-center gap-3">
+                    <span className="text-[10px] font-black text-slate-400 w-4">{star}</span>
+                    <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-yellow-400 transition-all duration-500" style={{ width: `${percentage}%` }}></div>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-500 w-8 text-right">{count}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          /* Trạng thái sau khi bấm chọn sao */
+          <div className="py-10 text-center animate-bounce-short">
+            <div className="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+              <i className="fas fa-check text-3xl"></i>
+            </div>
+            <p className="font-black text-slate-800 uppercase text-sm">Cảm ơn bạn đã đánh giá!</p>
+            <p className="text-slate-400 text-[10px] font-bold mt-1">Ý kiến của bạn giúp hệ thống hoàn thiện hơn</p>
+          </div>
+        )}
       </div>
     </div>
   </div>
