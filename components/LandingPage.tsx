@@ -74,10 +74,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       top10: result.data.top10
     });
   }
-};
-useEffect(() => {
+   useEffect(() => {
   fetchStats();
 }, []);
+};
+
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
     if (quizMode === 'gift' && inputPassword !== ADMIN_CONFIG.quizPassword) return alert("Mật khẩu Quà QuiZ không chính xác!");
