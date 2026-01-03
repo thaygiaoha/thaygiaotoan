@@ -245,26 +245,10 @@ const handleRate = (stars: number) => {
     </div>
 
       {/* 2. MARQUEE */}
-      // tailwind.config.js
-      module.exports = {
-      theme: {
-        extend: {
-      animation: {
-        'marquee-slow': 'marquee 25s linear infinite',
-      },
-      keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(100%)' },
-          '100%': { transform: 'translateX(-100%)' },
-        }
-      }
-    },
-  },
-}
-      <div className="flex justify-center">
+     <div className="flex justify-center">
         <div className="bg-indigo-700 py-3 rounded-2xl overflow-hidden shadow-inner border-b-4 border-indigo-900 w-full max-w-5xl">
           <div className="animate-marquee-slow whitespace-nowrap text-white font-black uppercase text-[11px] tracking-widest">
-            ⭐ Chào mừng các bạn đến với Hệ thống học tập trực tuyến môn Toán ! &nbsp;&nbsp;&nbsp; ⭐ Luyện tập chăm chỉ mỗi ngày để bứt phá điểm số! &nbsp;&nbsp;&nbsp; ⭐ Liên hệ: 0988.948.882
+            ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
           </div>
         </div>
       </div>
