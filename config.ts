@@ -21,6 +21,22 @@ export const IMAGES_CAROUSEL = [
   "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1200",
   "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200"
 ];
+export const ADMIN_CONFIG = {
+  quizPassword: "66668888",
+  schools: [
+    "THPT Yên Dũng số 2",
+    "THPT Yên Dũng số 1",
+    "THPT Lạng Giang số 1",
+    "Khác"
+  ],
+  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"]
+};
+export const OTHER_APPS = [
+  { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
+  { label: "Kênh Youtube Toán", icon: "fab fa-youtube", link: "https://youtube.com/..." },
+  { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
+  { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
+];
 
 export const TOPICS_DATA: Record<number, Topic[]> = {
   7: [{ id: 701, name: "Toán lớp 7" }],
