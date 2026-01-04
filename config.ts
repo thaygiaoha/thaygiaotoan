@@ -1,221 +1,104 @@
-import React, { useState, useEffect } from "react";
-import { IMAGES_CAROUSEL, DANHGIA_URL } from "../config";
-import { AppUser, Student } from "../types";
 
-/* ================== TYPES ================== */
-type Top10Item = {
-  name: string;
-  idPhone: string;
-  score: number;
-  time: number;
+import { Topic, ExamCodeDefinition, NewsItem, FixedConfig } from './types';
+
+export const GRADES = [9, 10, 11, 12];
+export const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbxmf9eSIVXDDCoMJYATTOyweo6nFlNVvYv9jE0Ws7yx5lI8YvVxMnh7B6Um0NeFPj5r/exec";
+export const DANHGIA_URL = "https://script.google.com/macros/s/AKfycbzKUxIb-pmb5zFZBgS9b0oJC-iptzA9Lmh9w1H4pXoEING0lGTDpqngdLaZNQceHlUS/exec";
+export const API_ROUTING: Record<string, string> = {
+  "680988948882": DEFAULT_API_URL,
+  "9999": "https://script.google.com/macros/s/AKfycbxmf9eSIVXDDCoMJYATTOyweo6nFlNVvYv9jE0Ws7yx5lI8YvVxMnh7B6Um0NeFPj5r/exec",
+  "68686868": "https://script.google.com/macros/s/AKfycbzKUxIb-pmb5zFZBgS9b0oJC-iptzA9Lmh9w1H4pXoEING0lGTDpqngdLaZNQceHlUS/exec"
 };
 
-interface LandingPageProps {
-  onSelectGrade: (grade: number) => void;
-  onSelectQuiz: (num: number, pts: number, quizStudent: Partial<Student>) => void;
-  user: AppUser | null;
-  onOpenAuth: () => void;
-  onOpenVip: () => void;
-}
-
-/* ================== CONFIG ================== */
-const ADMIN_CONFIG = {
-  quizPassword: "66668888",
-  schools: [
-    "THPT Yên Dũng số 2",
-    "THPT Yên Dũng số 1",
-    "THPT Lạng Giang số 1",
-    "Khác",
-  ],
-  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"],
-};
-
-const OTHER_APPS = [
-  { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
-  { label: "Kênh Youtube Toán", icon: "fab fa-youtube", link: "https://youtube.com/..." },
-  { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
+export const NEWS_DATA: NewsItem[] = [
+  { title: "Thông tin tuyển sinh lớp 10 năm 2025", link: "https://moet.gov.vn" },
+  { title: "Cấu trúc đề thi tốt nghiệp THPT mới nhất", link: "https://vneconomy.vn" },
+  { title: "Lịch thi học sinh giỏi cấp tỉnh Bắc Ninh", link: "https://bacninh.edu.vn" }
 ];
 
-/* ================== COMPONENT ================== */
-const LandingPage: React.FC<LandingPageProps> = ({
-  onSelectGrade,
-  onSelectQuiz,
-  user,
-  onOpenAuth,
-  onOpenVip,
-}) => {
-  /* ---------- STATE ---------- */
-  const [currentImg, setCurrentImg] = useState(0);
-  const [showQuizModal, setShowQuizModal] = useState<{ num: number; pts: number } | null>(null);
-  const [quizMode, setQuizMode] = useState<"free" | "gift" | null>(null);
-  const [inputPassword, setInputPassword] = useState("");
+export const IMAGES_CAROUSEL = [
+  "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200",
+  "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1200",
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200"
+];
 
-  const [quizInfo, setQuizInfo] = useState({
-    name: "",
-    phone: "",
-    school: "",
-  });
-
-  const [bankInfo, setBankInfo] = useState({
-    stk: "",
-    bankName: "",
-  });
-
-  const [stats, setStats] = useState<{
-    ratings: Record<number, number>;
-    top10: Top10Item[];
-  }>({
-    ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-    top10: [],
-  });
-
-  /* ---------- FETCH TOP10 ---------- */
-  useEffect(() => {
-    const fetchTop10 = async () => {
-      try {
-        const res = await fetch(`${DANHGIA_URL}?type=top10`);
-        const json = await res.json();
-
-        setStats((prev) => ({
-          ...prev,
-          top10: Array.isArray(json.data)
-            ? json.data.map((x: any) => ({
-                name: x.name,
-                idPhone: x.idPhone,
-                score: Number(x.score) || 0,
-                time: Number(x.time) || 0,
-              }))
-            : [],
-        }));
-      } catch (err) {
-        console.error("Load TOP10 lỗi:", err);
-      }
-    };
-
-    fetchTop10();
-  }, []);
-
-  /* ---------- QUIZ ---------- */
-  const handleStartQuiz = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (quizMode === "gift" && inputPassword !== ADMIN_CONFIG.quizPassword) {
-      alert("Mật khẩu không đúng");
-      return;
-    }
-
-    if (!quizInfo.name || !quizInfo.phone) {
-      alert("Nhập thiếu thông tin");
-      return;
-    }
-
-    onSelectQuiz(showQuizModal!.num, showQuizModal!.pts, {
-      name: quizInfo.name,
-      phoneNumber: quizInfo.phone,
-      school: quizInfo.school,
-      stk: quizMode === "gift" ? bankInfo.stk : "Tự do",
-      bank: quizMode === "gift" ? bankInfo.bankName : "Tự do",
-    });
-
-    setShowQuizModal(null);
-    setQuizMode(null);
-  };
-
-  /* ================== RENDER ================== */
-  return (
-    <div className="max-w-7xl mx-auto px-2 pb-10">
-
-      {/* ===== TOP10 ===== */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-blue-600 text-white text-xs font-black p-3 text-center">
-            <i className="fas fa-crown text-yellow-300 mr-1"></i>
-            TOP 10 QUIZ TUẦN
-          </div>
-
-          <div className="p-2 space-y-2 max-h-[500px] overflow-y-auto">
-            {stats.top10.length === 0 && (
-              <div className="text-center text-[10px] text-slate-400 font-bold">
-                Đang tải...
-              </div>
-            )}
-
-            {stats.top10.map((item, index) => {
-              const cup =
-                index === 0 ? "🥇" :
-                index === 1 ? "🥈" :
-                index === 2 ? "🥉" : "🏅";
-
-              return (
-                <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl shadow-sm">
-                  <div className="w-8 text-xl text-center">{cup}</div>
-
-                  <div className="flex-1 overflow-hidden">
-                    <div className="text-[11px] font-black uppercase truncate">
-                      {item.name}
-                    </div>
-                    <div className="text-[9px] text-slate-400 font-bold">
-                      {item.idPhone}
-                    </div>
-                  </div>
-
-                  <div className="text-right shrink-0">
-                    <div className="text-[12px] font-black text-red-600">
-                      {item.score} <span className="text-[8px]">đ</span>
-                    </div>
-                    <div className="text-[9px] text-slate-400 italic">
-                      {item.time}s
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ===== CAROUSEL ===== */}
-        <div className="lg:col-span-7">
-          <div className="relative h-[420px] rounded-3xl overflow-hidden shadow-2xl">
-            {IMAGES_CAROUSEL.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt=""
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                  idx === currentImg ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ===== ACTIONS ===== */}
-        <div className="lg:col-span-2 flex flex-col gap-3">
-          <button
-            onClick={onOpenAuth}
-            className="bg-indigo-600 text-white rounded-2xl font-black text-xs p-3"
-          >
-            <i className="fas fa-sign-in-alt text-lg"></i><br />
-            {user ? user.phoneNumber : "Đăng nhập"}
-          </button>
-
-          <button
-            onClick={onOpenVip}
-            className="bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-xs p-3"
-          >
-            <i className="fas fa-gem text-lg"></i><br />
-            Nâng cấp VIP
-          </button>
-        </div>
-      </div>
-
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      />
-    </div>
-  );
+export const TOPICS_DATA: Record<number, Topic[]> = {
+  7: [{ id: 701, name: "Toán lớp 7" }],
+  8: [{ id: 801, name: "Toán lớp 8" }],
+  9:  [
+    { id: 901, name: "01. Phương trình và hệ phương trình bậc nhất" },
+    { id: 902, name: "02. Phương trình bậc hai một ẩn số" },
+    { id: 903, name: "03. Hệ thức lượng trong tam giác vuông" },
+    { id: 904, name: "04. Đường tròn" },
+    { id: 905, name: "05. Hàm số y = ax²" },
+    { id: 906, name: "06. Các hình khối trong thực tiễn" },
+    { id: 907, name: "07. Căn thức bậc hai và căn thức bậc ba" },
+    { id: 908, name: "08. Một số yếu tố xác suất và thống kê" }
+  ],
+  10: [
+    { id: 1001, name: "01. Mệnh đề và Tập hợp" },
+    { id: 1002, name: "02. BPT và Hệ BPT bậc nhất hai ẩn" },
+    { id: 1003, name: "03. Hàm số bậc hai và Đồ thị" },
+    { id: 1004, name: "04. Hệ thức lượng trong tam giác" },
+    { id: 1005, name: "05. Vectơ" },
+    { id: 1006, name: "06. Thống kê" },
+    { id: 1007, name: "07. Phương pháp tọa độ trong mặt phẳng" },
+    { id: 1008, name: "08. Đại số tổ hợp" },
+    { id: 1009, name: "09. Xác suất cổ điển của biến cố" }
+  ],
+  11: [
+    { id: 1101, name: "01. Hàm số lượng giác và Phương trình lượng giác" },
+    { id: 1102, name: "02. Dãy số, Cấp số cộng và Cấp số nhân" },
+    { id: 1103, name: "03. Các số đặc trưng đo thế giới trung tâm" },
+    { id: 1104, name: "04. Quan hệ song song trong không gian" },
+    { id: 1105, name: "05. Giới hạn dãy số" },
+    { id: 1106, name: "06. Giới hạn hàm số. Hàm số liên tục" },
+    { id: 1107, name: "07. Hàm số mũ và Hàm số lôgarit" },
+    { id: 1108, name: "08. Quan hệ vuông góc trong không gian" },
+    { id: 1109, name: "09. Quy tắc tính đạo hàm" },
+    { id: 1110, name: "10. Quy tắc tính xác suất" }
+  ],
+  12: [
+    { id: 1201, name: "01. Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số" },
+    { id: 1202, name: "02. Vectơ và Hệ tọa độ trong không gian (Oxyz)" },
+    { id: 1203, name: "03. Các số đặc trưng đo mức độ phân tán của mẫu số liệu ghép nhóm" },
+    { id: 1204, name: "04. Nguyên hàm và Tích phân" },
+    { id: 1205, name: "05. Phương pháp tọa độ trong không gian (Đường thẳng, Mặt phẳng, Mặt cầu)" },
+    { id: 1206, name: "06. Xác suất có điều kiện và Công thức Bayes" }
+  ]
 };
 
-export default LandingPage;
+// Loại 45 phút : MCQ = 12 (0.5đ); TF = 2 (1đ, 1 câu mức 3); SA = 4 (0.5đ, 1 câu mức 3, 1 câu mức 4)
+const CONFIG_45P: FixedConfig = {
+  duration: 45,
+  numMC: [12], scoreMC: 0.5, mcL3: [0], mcL4: [0],
+  numTF: [2], scoreTF: 1, tfL3: [1], tfL4: [0],
+  numSA: [4], scoreSA: 0.5, saL3: [1], saL4: [1]
+};
+
+// Loại 90 phút : MCQ = 12 (0.25đ); TF = 4 (1đ, 2 câu mức 3); SA = 6 (0.5đ, 1 câu mức 3, 1 câu mức 4)
+const CONFIG_90P: FixedConfig = {
+  duration: 90,
+  numMC: [12], scoreMC: 0.25, mcL3: [0], mcL4: [0],
+  numTF: [4], scoreTF: 1, tfL3: [2], tfL4: [0],
+  numSA: [6], scoreSA: 0.5, saL3: [1], saL4: [1]
+};
+
+export const EXAM_CODES: Record<number, ExamCodeDefinition[]> = {
+  9: [
+    { code: "TD_45_K9", name: "Tự do 45 phút (7+8+9)", topics: 'manual', fixedConfig: CONFIG_45P },
+    { code: "TD_90_K9", name: "Tự do 90 phút (7+8+9)", topics: 'manual', fixedConfig: CONFIG_90P }
+  ],
+  10: [
+    { code: "TD_45_K10", name: "Tự do 45 phút (Khối 10)", topics: 'manual', fixedConfig: CONFIG_45P },
+    { code: "TD_90_K10", name: "Tự do 90 phút (Khối 10)", topics: 'manual', fixedConfig: CONFIG_90P }
+  ],
+  11: [
+    { code: "TD_45_K11", name: "Tự do 45 phút (10+11)", topics: 'manual', fixedConfig: CONFIG_45P },
+    { code: "TD_90_K11", name: "Tự do 90 phút (10+11)", topics: 'manual', fixedConfig: CONFIG_90P }
+  ],
+  12: [
+    { code: "TD_45_K12", name: "Tự do 45 phút (10+11+12)", topics: 'manual', fixedConfig: CONFIG_45P },
+    { code: "TD_90_K12", name: "Tự do 90 phút (10+11+12)", topics: 'manual', fixedConfig: CONFIG_90P }
+  ]
+};
