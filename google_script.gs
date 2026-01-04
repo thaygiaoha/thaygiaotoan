@@ -60,6 +60,15 @@ function doGet(e) {
 
   return createResponse("success", "OK", stats);
 }
+// --- Lệnh 2: Lấy Mật khẩu ô H2 (Lệnh mới thêm) ---
+  if (type === 'getPass') {
+    const sheetList = ss.getSheetByName("danhsach");
+    const password = sheetList.getRange("H2").getValue();
+    
+    return ContentService.createTextOutput(JSON.stringify({ 
+      password: password.toString() 
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
 
   // --- TRƯỜNG HỢP 2: XÁC MINH HỌC SINH ---
   const idnumber = e.parameter.idnumber;
@@ -96,7 +105,7 @@ function doGet(e) {
     }
   }
 
-  if (!student) return createResponse("error", "Thông tin SBD hoặc ID không khớp!");
+  if (!student) return createResponse("error", "Thông tin ID không khớp!. Liên hệ thầy cô của bạn ngay nhé!");
   return createResponse("success", "Xác minh thành công", student);
 }
 
