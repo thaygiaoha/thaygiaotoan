@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
-import { ADMIN_CONFIG } from '../config';
+import { ADMIN_CONFIG, OTHER_APPS } from '../config';
 
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
