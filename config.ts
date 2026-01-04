@@ -113,6 +113,15 @@ export const EXAM_CODES: Record<number, ExamCodeDefinition[]> = {
   ],
   12: [
     { code: "TD_45_K12", name: "Tự do 45 phút (10+11+12)", topics: 'manual', fixedConfig: CONFIG_45P },
-    { code: "TD_90_K12", name: "Tự do 90 phút (10+11+12)", topics: 'manual', fixedConfig: CONFIG_90P }
+    { code: "TD_90_K12", name: "Tự do 90 phút (10+11+12)", topics: 'manual', fixedConfig: CONFIG_90P },
+    { code: "TD_90_K12", 
+     name: "Tổng hợp theo ma trận", 
+     topics: [1001, 1101, 1204],
+     duration: 90,
+      numMC: [2, 2, 8], scoreMC: 0.25, mcL3: [0, 0, 0], mcL4: [0, 0, 0],
+      numTF: [1, 1, 2], scoreTF: 1, tfL3: [0, 0, 1], tfL4: [0, 0, 1],
+      numSA: [1, 2, 4], scoreSA: 0.5, saL3: [0, 1, 1], saL4: [0, 1, 1]
+      }
+    
   ]
 };
