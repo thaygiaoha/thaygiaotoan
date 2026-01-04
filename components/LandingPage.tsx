@@ -296,8 +296,7 @@ const handleRate = (stars: number) => {
           </div>
         </div>
       ); // Đóng return của map
-    }) // Đóng map
-  ) : (
+    }); // Đóng map
     <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
       🚀 Đang tải bảng vàng...
     </div>
