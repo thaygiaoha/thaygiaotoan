@@ -113,29 +113,31 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   useEffect(() => {
   const fetchTop10 = async () => {
     try {
+      // Đảm bảo DANHGIA_URL đã được định nghĩa trong file config
       const res = await fetch(`${DANHGIA_URL}?type=top10`);
       const json = await res.json();
 
-      setStats(prev => ({
-        ...prev,
-        top10: Array.isArray(json.data)
-          ? json.data.map((x: any) => ({
-              name: x.name,
-              idPhone: x.idPhone,
-              score: x.score,
-              time: x.time
-            }))
-          : []
-      }));
+      // Kiểm tra kỹ cấu trúc json trả về từ App Script của thầy
+      // Nếu App Script trả về { data: [...] } thì dùng json.data
+      // Nếu App Script trả về thẳng [...] thì dùng json
+      const dataToMap = json.data || json; 
+
+      if (Array.isArray(dataToMap)) {
+        setStats(prev => ({
+          ...prev,
+          top10: dataToMap.slice(0, 10) // Lấy đúng 10 người
+        }));
+      }
     } catch (e) {
-      console.error(e);
+      console.error("Lỗi lấy dữ liệu Top 10:", e);
     }
   };
 
   fetchTop10();
+  // Có thể thêm interval để tự động cập nhật sau mỗi 1 phút
+  const interval = setInterval(fetchTop10, 60000);
+  return () => clearInterval(interval);
 }, []);
-
-
 const handleRate = (stars: number) => {
   // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
   setStats(prev => ({
@@ -259,8 +261,9 @@ const handleRate = (stars: number) => {
     </div>
 
     {/* Nội dung danh sách TOP10 */}
-    <div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
-  {stats.top10.length > 0 ? (
+    {/* Nội dung danh sách TOP10 */}
+<div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
+  {stats.top10 && stats.top10.length > 0 ? (
     stats.top10.map((item, index) => {
       const cup =
         index === 0 ? "🥇" :
@@ -268,46 +271,38 @@ const handleRate = (stars: number) => {
         index === 2 ? "🥉" : "🏅";
 
       return (
-  <div
-    key={index}
-    className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm"
-  >
-    {/* Cup */}
-    <div className="w-8 text-xl text-center">{cup}</div>
+        <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          {/* Cup */}
+          <div className="w-8 text-xl text-center">{cup}</div>
 
-    {/* Name + Phone */}
-    <div className="flex-1 overflow-hidden">
-      <div className="text-[11px] font-black uppercase truncate">
-        {item.name}
-      </div>
-      <div className="text-[9px] text-slate-400 font-bold">
-        {item.idPhone}
-      </div>
-    </div>
+          {/* Name + Phone */}
+          <div className="flex-1 overflow-hidden">
+            <div className="text-[11px] font-black uppercase truncate text-slate-800">
+              {item.name || "Ẩn danh"}
+            </div>
+            <div className="text-[9px] text-slate-400 font-bold">
+              {item.idPhone || "09xxx..."}
+            </div>
+          </div>
 
-    {/* Score + Time */}
-    <div className="text-right shrink-0">
-      <div className="text-[12px] font-black text-red-600">
-        {item.score} <span className="text-[8px]">đ</span>
-      </div>
-      <div className="text-[9px] text-slate-400 italic">
-        {item.time}s
-      </div>
-    </div>
-  </div>
-);
- </div>
+          {/* Score + Time */}
+          <div className="text-right shrink-0">
+            <div className="text-[12px] font-black text-red-600">
+              {item.score} <span className="text-[8px]">đ</span>
+            </div>
+            <div className="text-[9px] text-slate-400 italic">
+              {item.time}s
+            </div>
+          </div>
         </div>
-      );
-    })
+      ); // Đóng return của map
+    }) // Đóng map
   ) : (
     <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
       🚀 Đang tải bảng vàng...
     </div>
   )}
 </div>
-
-
         {/* 5.CAROUSEL */}
         <div className="lg:col-span-7">
           <div className="relative h-64 md:h-full min-h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
