@@ -265,38 +265,35 @@ const handleRate = (stars: number) => {
         index === 2 ? "🥉" : "🏅";
 
       return (
-        <div
-          key={index}
-          className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm"
-        >
-          {/* Cup */}
-          <div className="w-8 text-xl text-center">{cup}</div>
+  <div
+    key={index}
+    className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm"
+  >
+    {/* Cup */}
+    <div className="w-8 text-xl text-center">{cup}</div>
 
-          {/* Name + Phone */}
-          <div className="flex items-center gap-3 p-3 bg-white rounded-2xl">
-          <div className="w-8 text-xl text-center">{cup}</div>
+    {/* Name + Phone */}
+    <div className="flex-1 overflow-hidden">
+      <div className="text-[11px] font-black uppercase truncate">
+        {item.name}
+      </div>
+      <div className="text-[9px] text-slate-400 font-bold">
+        {item.idPhone}
+      </div>
+    </div>
 
-          <div className="flex-1 overflow-hidden">
-          <div className="text-[11px] font-black uppercase truncate">
-          {item.name}
-          </div>
-          <div className="text-[9px] text-slate-400 font-bold">
-          {item.idPhone}
-          </div>
-          </div>
-
-          <div className="text-right shrink-0">
-          <div className="text-[12px] font-black text-red-600">
-          {item.score} <span className="text-[8px]">đ</span> 
-          </div>
-        <div className="text-[9px] text-slate-400 italic">
-        {item.time}s 
+    {/* Score + Time */}
+    <div className="text-right shrink-0">
+      <div className="text-[12px] font-black text-red-600">
+        {item.score} <span className="text-[8px]">đ</span>
+      </div>
+      <div className="text-[9px] text-slate-400 italic">
+        {item.time}s
+      </div>
     </div>
   </div>
-</div>
-
-
-          </div>
+);
+ </div>
         </div>
       );
     })
