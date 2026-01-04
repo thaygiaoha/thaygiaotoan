@@ -129,26 +129,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
       const json = await res.json();
 
       setStats(prev => ({
-  ...prev,
-  top10: Array.isArray(json.data) ? json.data : []
-}));
-
-    } catch (error) {
-      console.error("Lỗi load TOP10:", error);
+        ...prev,
+        top10: Array.isArray(json.data)
+          ? json.data.map((x: any) => ({
+              name: x.name,
+              idPhone: x.idPhone,
+              score: x.score,
+              time: x.time
+            }))
+          : []
+      }));
+    } catch (e) {
+      console.error(e);
     }
   };
 
   fetchTop10();
 }, []);
-setStats(prev => ({
-  ...prev,
-  top10: json.data.map((x: any) => ({
-    name: x.name,
-    idPhone: x.idPhone,
-    tongdiem: x.score,
-    fulltime: x.time
-  }))
-}));
+
+
 const handleRate = (stars: number) => {
   // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
   setStats(prev => ({
