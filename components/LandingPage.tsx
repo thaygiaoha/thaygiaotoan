@@ -235,7 +235,7 @@ const handleRate = (stars: number) => {
           paddingLeft: '100%'
         }} 
       >
-        ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức! ⭐ Liên hệ: 0988.948.882 để tham gia nhóm lập Web miễn phí!
+        ⭐ Chúc các em ôn tập tốt và luôn làm chủ kiến thức! ⭐ Thầy cô liên hệ: 0988.948.882 để được hướng dẫn sử dụng Apps và tạo Web miễn phí!
       </div>
     </div>
   </div>
