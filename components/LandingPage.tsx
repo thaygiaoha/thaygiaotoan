@@ -301,42 +301,69 @@ const handleRate = (stars: number) => {
         </div>
 
         {/* 6. CỘT PHẢI ACTIONS */}
-        <div className="lg:col-span-2 flex flex-col gap-3">
-          <button onClick={() => window.open("https://new-chat-bot-two.vercel.app/", '_blank')} className="w-full flex-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-headset text-lg"></i><br/>Trợ lý học tập
-          </button>
-          <button onClick={() => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank')} className="w-full flex-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-users text-lg"></i><br/>Đăng ký học Toán
-          </button>
-          
-          {/* Dropdown Ứng dụng khác */}
-          <div className="relative group w-full flex-1">
-            <button className="w-full h-full bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-teal-800 p-2">
-              <i className="fas fa-th text-lg"></i><br/>Ứng dụng khác
-            </button>
-            <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border hidden group-hover:block z-[100] p-2">
-              {OTHER_APPS.map((app, idx) => (
-                <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl">
-                  <i className={`${app.icon} text-teal-600 w-5`}></i>
-                  <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
+        {/* 6. CỘT PHẢI ACTIONS - Đã sửa lỗi nút không đều */}
+<div className="lg:col-span-2 grid grid-cols-2 lg:grid-cols-1 gap-3">
+  {[
+    { 
+      label: "Trợ lý học tập", 
+      icon: "fas fa-headset", 
+      color: "bg-indigo-600 border-indigo-900", 
+      onClick: () => window.open("https://new-chat-bot-two.vercel.app/", '_blank') 
+    },
+    { 
+      label: "Đăng ký học Toán", 
+      icon: "fas fa-users", 
+      color: "bg-indigo-600 border-indigo-900", 
+      onClick: () => window.open("https://www.facebook.com/hoctoanthayha.bg", '_blank') 
+    },
+    { 
+      label: "Chọn môn học", 
+      icon: "fas fa-graduation-cap", 
+      color: "bg-purple-600 border-purple-800", 
+      onClick: () => setShowSubjectModal(true) 
+    },
+    { 
+      label: user ? user.phoneNumber : "Đăng Nhập", 
+      icon: "fas fa-sign-in-alt", 
+      color: "bg-indigo-600 border-indigo-900", 
+      onClick: onOpenAuth 
+    }
+  ].map((btn, idx) => (
+    <button 
+      key={idx} 
+      onClick={btn.onClick} 
+      className={`w-full h-[70px] ${btn.color} text-white rounded-2xl font-black text-[10px] uppercase border-b-4 flex flex-col items-center justify-center gap-1 transition-all active:scale-95 shadow-md`}
+    >
+      <i className={`${btn.icon} text-lg`}></i>
+      <span className="leading-tight px-1">{btn.label}</span>
+    </button>
+  ))}
 
-          <button onClick={() => setShowSubjectModal(true)} className="w-full flex-1 bg-purple-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-purple-800 p-2">
-            <i className="fas fa-graduation-cap text-lg"></i><br/>Chọn môn học
-          </button>
+  {/* Nút Ứng dụng khác - Giữ cấu trúc Dropdown nhưng làm đều chiều cao */}
+  <div className="relative group w-full">
+    <button className="w-full h-[70px] bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-teal-800 flex flex-col items-center justify-center gap-1">
+      <i className="fas fa-th text-lg"></i>
+      <span>Ứng dụng khác</span>
+    </button>
+    <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-2xl shadow-2xl border hidden group-hover:block z-[100] p-2">
+      {OTHER_APPS.map((app, idx) => (
+        <a key={idx} href={app.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl">
+          <i className={`${app.icon} text-teal-600 w-5`}></i>
+          <span className="text-[10px] font-black text-slate-700 uppercase">{app.label}</span>
+        </a>
+      ))}
+    </div>
+  </div>
 
-          <button onClick={onOpenAuth} className="w-full flex-1 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-indigo-900 p-2">
-            <i className="fas fa-sign-in-alt text-lg"></i><br/>{user ? user.phoneNumber : "Đăng Nhập"}
-          </button>
-
-          <button onClick={onOpenVip} className="w-full flex-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-orange-700 p-2">
-            <i className="fas fa-gem text-lg"></i><br/>Nâng Cấp VIP
-          </button>
-        </div>
-      </div>
+  {/* Nút VIP - Chiếm trọn 1 hàng hoặc nổi bật hơn */}
+  <button 
+    onClick={onOpenVip} 
+    className="w-full h-[70px] col-span-2 lg:col-span-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl font-black text-[10px] uppercase border-b-4 border-orange-700 flex flex-col items-center justify-center gap-1 shadow-lg animate-pulse"
+  >
+    <i className="fas fa-gem text-lg"></i>
+    <span>Nâng Cấp VIP</span>
+  </button>
+</div>
       {/* 7.MODAL CHỌN MÔN (2 CỘT) */}
       {showSubjectModal && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
