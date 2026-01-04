@@ -126,13 +126,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   const fetchTop10 = async () => {
     try {
       const res = await fetch(`${DANHGIA_URL}?type=top10`);
-      const data = await res.json();
+      const json = await res.json();
 
-      // data = [{ name, idPhone, tongdiem, fulltime, ... }]
       setStats(prev => ({
-        ...prev,
-        top10: Array.isArray(data) ? data : []
-      }));
+  ...prev,
+  top10: Array.isArray(json.data) ? json.data : []
+}));
+
     } catch (error) {
       console.error("Lỗi load TOP10:", error);
     }
@@ -140,8 +140,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
 
   fetchTop10();
 }, []);
-
-
+setStats(prev => ({
+  ...prev,
+  top10: json.data.map((x: any) => ({
+    name: x.name,
+    idPhone: x.idPhone,
+    tongdiem: x.score,
+    fulltime: x.time
+  }))
+}));
 const handleRate = (stars: number) => {
   // 1. Cập nhật số liệu hiển thị ngay lập tức (Chỉ tồn tại trong phiên làm việc này)
   setStats(prev => ({
@@ -282,22 +289,29 @@ const handleRate = (stars: number) => {
           <div className="w-8 text-xl text-center">{cup}</div>
 
           {/* Name + Phone */}
-         <div className="text-[11px] font-black text-slate-800 uppercase truncate">
-  {item.name}
-</div>
-<div className="text-[9px] text-slate-400 font-bold tracking-wider">
-  {item.idPhone}
-</div>
+        Phải thế này chứ
+        <div className="flex items-center gap-3 p-3 bg-white rounded-2xl">
+          <div className="w-8 text-xl text-center">{cup}</div>
 
+          <div className="flex-1 overflow-hidden">
+          <div className="text-[11px] font-black uppercase truncate">
+          {item.name}
+          </div>
+          <div className="text-[9px] text-slate-400 font-bold">
+          {item.idPhone}
+          </div>
+          </div>
 
-          {/* Score + Time */}
           <div className="text-right shrink-0">
-            <div className="text-[12px] font-black text-red-600">
-  {item.tongdiem} <span className="text-[8px]">đ</span>
+          <div className="text-[12px] font-black text-red-600">
+          {item.score} <span className="text-[8px]">đ</span> 
+          </div>
+        <div className="text-[9px] text-slate-400 italic">
+        {item.time}s 
+    </div>
+  </div>
 </div>
-<div className="text-[9px] text-slate-400 font-bold italic">
-  {item.fulltime}s
-</div>
+
 
           </div>
         </div>
