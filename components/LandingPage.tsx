@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
+import { ADMIN_CONFIG } from '../config';
+
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
   return phone.slice(0, 2) + "xxx" + phone.slice(-4);
