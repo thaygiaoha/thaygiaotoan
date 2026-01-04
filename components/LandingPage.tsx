@@ -27,6 +27,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   };
 
   // 2. Các State quản lý
+  const [isOtherBank, setIsOtherBank] = useState(false);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
   const [hasRated, setHasRated] = useState(false);
   const [quizMode, setQuizMode] = useState<'free' | 'gift' | null>(null);
