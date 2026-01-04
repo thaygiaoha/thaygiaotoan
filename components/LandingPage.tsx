@@ -273,8 +273,7 @@ const handleRate = (stars: number) => {
           <div className="w-8 text-xl text-center">{cup}</div>
 
           {/* Name + Phone */}
-        Phải thế này chứ
-        <div className="flex items-center gap-3 p-3 bg-white rounded-2xl">
+          <div className="flex items-center gap-3 p-3 bg-white rounded-2xl">
           <div className="w-8 text-xl text-center">{cup}</div>
 
           <div className="flex-1 overflow-hidden">
