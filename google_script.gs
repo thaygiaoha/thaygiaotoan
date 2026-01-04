@@ -12,42 +12,54 @@ function clearWeeklyQuizData() {
 function doGet(e) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const type = e.parameter.type;
+  // ---LẤY TOP 10
+    // --- TRƯỜNG HỢP 0: LẤY TOP 10 RIÊNG ---
+  if (type === 'top10') {
+    const sheet = ss.getSheetByName("Top10Display");
+    if (!sheet) {
+      return createResponse("error", "Không tìm thấy sheet Top10Display");
+    }
+
+    const lastRow = sheet.getLastRow();
+    if (lastRow < 2) {
+      return createResponse("success", "Chưa có dữ liệu Top 10", []);
+    }
+
+    const values = sheet.getRange(2, 1, Math.min(10, lastRow - 1), 7).getValues();
+
+    const top10 = values.map((row, index) => ({
+      rank: index + 1,
+      name: row[0],        // A
+      phoneNumber: row[1], // B
+      score: row[2],       // C
+      time: row[3],        // D (seconds)
+      sotk: row[4],        // E
+      bank: row[5],        // F
+      idPhone: row[6]      // G (đã che)
+    }));
+
+    return createResponse("success", "OK", top10);
+  }
+
 
   // --- TRƯỜNG HỢP 1: LẤY THỐNG KÊ (RATINGS & TOP 10) ---
   if (type === 'getStats') {
-    const stats = {
-      ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-      top10: []
-    };
+  const stats = {
+    ratings: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+    top10: []
+  };
 
-    // 1. Lấy dữ liệu đánh giá sao
-    const sheetRate = ss.getSheetByName("danhgia");
-    if (sheetRate) {
-      const rateData = sheetRate.getDataRange().getValues();
-      for (let i = 1; i < rateData.length; i++) {
-        const star = parseInt(rateData[i][1]);
-        if (star >= 1 && star <= 5) stats.ratings[star]++;
-      }
+  const sheetRate = ss.getSheetByName("danhgia");
+  if (sheetRate) {
+    const rateData = sheetRate.getDataRange().getValues();
+    for (let i = 1; i < rateData.length; i++) {
+      const star = parseInt(rateData[i][1]);
+      if (star >= 1 && star <= 5) stats.ratings[star]++;
     }
-
-    // 2. Lấy dữ liệu Top 10 từ sheet Top10Display (Ưu tiên hiển thị)
-    const sheetDisplay = ss.getSheetByName("Top10Display");
-    if (sheetDisplay) {
-      const lastRow = sheetDisplay.getLastRow();
-      if (lastRow >= 2) {
-        const values = sheetDisplay.getRange(2, 1, Math.min(10, lastRow - 1), 7).getValues();
-        stats.top10 = values.map((row, index) => ({
-          rank: index + 1,
-          name: row[0],      // Cột A
-          score: row[2],     // Cột C
-          time: row[3],      // Cột D
-          idPhone: row[6] || row[1] // Cột G (idPhone) hoặc cột B
-        }));
-      }
-    }
-
-    return createResponse("success", "Thành công", stats);
   }
+
+  return createResponse("success", "OK", stats);
+}
 
   // --- TRƯỜNG HỢP 2: XÁC MINH HỌC SINH ---
   const idnumber = e.parameter.idnumber;
