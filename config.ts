@@ -38,9 +38,7 @@ export const OTHER_APPS = [
 ];
 
 export const TOPICS_DATA: Record<number, Topic[]> = {
-  7: [{ id: 701, name: "Toán lớp 7" }],
-  8: [{ id: 801, name: "Toán lớp 8" }],
-  9:  [
+    9:  [
     { id: 901, name: "01. Phương trình và hệ phương trình bậc nhất" },
     { id: 902, name: "02. Phương trình bậc hai một ẩn số" },
     { id: 903, name: "03. Hệ thức lượng trong tam giác vuông" },
