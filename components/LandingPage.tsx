@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
 import { AppUser, Student } from '../types';
-
-
-const ADMIN_CONFIG = {
-  quizPassword: "66668888",
-  schools: ["THPT Yên Dũng số 2", "THPT Yên Dũng số 1", "THPT Lạng Giang số 1", "Khác"],
-  banks: ["Vietcombank", "Agribank", "MB Bank", "Khác"]
-};
-
-const OTHER_APPS = [
-  { label: "Nhóm Zalo hỗ trợ", icon: "fab fa-comment", link: "https://zalo.me/0988948882" },
-  { label: "Kênh Youtube Toán", icon: "fab fa-youtube", link: "https://youtube.com/..." },
-  { label: "Máy tính Online", icon: "fas fa-calculator", link: "https://www.desmos.com/scientific" },
-  { label: "Từ điển Toán học", icon: "fas fa-language", link: "https://..." }
-];
-
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
   return phone.slice(0, 2) + "xxx" + phone.slice(-4);
