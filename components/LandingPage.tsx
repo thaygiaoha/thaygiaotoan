@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL } from '../config';
+import { NEWS_DATA, IMAGES_CAROUSEL, DANHGIA_URL, ADMIN_CONFIG, OTHER_APPS } from '../config';
 import { AppUser, Student } from '../types';
-import { ADMIN_CONFIG, OTHER_APPS } from '../config';
-
 const formatPhoneHidden = (phone: string) => {
   if (!phone || phone.length < 7) return "09xxx****";
   return phone.slice(0, 2) + "xxx" + phone.slice(-4);
@@ -252,56 +250,34 @@ const handleRate = (stars: number) => {
 </div>   
       {/* 3. MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto w-full">
-       {/* 4. CỘT TRÁI: TOP 10 */}
+               {/* CỘT TRÁI: TOP 10 */}
         <div className="lg:col-span-3 flex flex-col">
-  <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col">
-    {/* Header giữ nguyên phong cách của bạn */}
-    <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
-      <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ TUẦN
-    </div>
-
-    {/* Nội dung danh sách TOP10 */}
-    {/* Nội dung danh sách TOP10 */}
-<div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[500px] custom-scrollbar">
-  {stats.top10 && stats.top10.length > 0 ? (
-    stats.top10.map((item, index) => {
-      const cup =
-        index === 0 ? "🥇" :
-        index === 1 ? "🥈" :
-        index === 2 ? "🥉" : "🏅";
-
-      return (
-        <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
-          {/* Cup */}
-          <div className="w-8 text-xl text-center">{cup}</div>
-
-          {/* Name + Phone */}
-          <div className="flex-1 overflow-hidden">
-            <div className="text-[11px] font-black uppercase truncate text-slate-800">
-              {item.name || "Ẩn danh"}
+          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-100 overflow-hidden border-b-4 border-blue-200 h-full flex flex-col min-h-[500px]">
+            <div className="bg-blue-600 p-4 text-white font-black text-xs uppercase text-center flex items-center justify-center gap-2">
+              <i className="fas fa-crown text-yellow-300"></i> TOP 10 CAO THỦ QUIZ
             </div>
-            <div className="text-[9px] text-slate-400 font-bold">
-              {item.idPhone || "09xxx..."}
-            </div>
-          </div>
-
-          {/* Score + Time */}
-          <div className="text-right shrink-0">
-            <div className="text-[12px] font-black text-red-600">
-              {item.score} <span className="text-[8px]">đ</span>
-            </div>
-            <div className="text-[9px] text-slate-400 italic">
-              {item.time}s
+            <div className="p-2 space-y-2 flex-grow bg-slate-50 overflow-y-auto max-h-[600px]">
+              {stats.top10 && stats.top10.length > 0 ? (
+                stats.top10.map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div className="w-8 text-xl text-center">{index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "🏅"}</div>
+                    <div className="flex-1 overflow-hidden">
+                      <div className="text-[11px] font-black uppercase truncate">{item.name || "Học sinh"}</div>
+                      <div className="text-[9px] text-slate-400 font-bold">{item.idPhone || "09xxxx"}</div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-[12px] font-black text-red-600">{item.score} <span className="text-[8px]">đ</span></div>
+                      <div className="text-[9px] text-slate-400 italic">{item.time}s</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">🚀 Đang tải bảng vàng...</div>
+              )}
             </div>
           </div>
         </div>
-      ); // Đóng return của map
-    }); // Đóng map
-    <div className="p-10 text-center text-slate-400 text-[10px] font-black uppercase">
-      🚀 Đang tải bảng vàng...
-    </div>
-  )}
-</div>
+
         {/* 5.CAROUSEL */}
         <div className="lg:col-span-7">
           <div className="relative h-64 md:h-full min-h-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
