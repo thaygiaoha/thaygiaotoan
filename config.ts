@@ -22,6 +22,7 @@ export const IMAGES_CAROUSEL = [
   "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200"
 ];
 export const ADMIN_CONFIG = {  
+  quizPassword: "66668888",
   schools: [
     "THPT Yên Dũng số 2",
     "THPT Yên Dũng số 1",
