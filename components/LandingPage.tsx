@@ -35,7 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   const [showQuizModal, setShowQuizModal] = useState<{num: number, pts: number} | null>(null);
   const [quizInfo, setQuizInfo] = useState({ name: '', class: '', school: '', phone: '' });
   const [bankInfo, setBankInfo] = useState({ stk: '', bankName: '' });
-  
+  const [serverPassword, setServerPassword] = useState("");  
   const [showRateModal, setShowRateModal] = useState(false);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
@@ -52,7 +52,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
   });
   const handleStartQuiz = (e: React.FormEvent) => {
     e.preventDefault();
-    if (quizMode === 'gift' && inputPassword !== ADMIN_CONFIG.quizPassword) return alert("Mật khẩu Quà QuiZ không chính xác!");
+    if (quizMode === 'gift' && inputPassword !== serverPassword) return alert("Mật khẩu Quà QuiZ không chính xác!");
     if (!quizInfo.name || !quizInfo.phone) return alert("Vui lòng nhập đầy đủ thông tin!");
     
     onSelectQuiz(showQuizModal!.num, showQuizModal!.pts, {
@@ -107,6 +107,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelectGrade, onSelectQuiz, 
     setTimeout(() => confetti.remove(), 5000);
   }
 };
+  // * Lấy pass QuiZ
+  useEffect(() => {
+  const fetchPassword = async () => {
+    try {
+      const res = await fetch(`${DANHGIA_URL}?type=getPass`);
+      const data = await res.json();
+      setServerPassword(data.password.toString()); // Lưu mật khẩu từ ô H2 vào state
+    } catch (e) {
+      console.error("Lỗi lấy mật khẩu:", e);
+    }
+  };
+  fetchPassword();
+}, []);
   // *TOP10chuan
   useEffect(() => {
   const fetchTop10 = async () => {
